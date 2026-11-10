@@ -1,0 +1,138 @@
+/* ==========================================================================
+   Base: reset, tipografia, utilitários, Lenis
+   ========================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: var(--nav-h);
+}
+
+body {
+  font-family: var(--font);
+  font-size: var(--fs-base);
+  line-height: 1.6;
+  color: var(--fg);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+img, svg, video { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+ul { list-style: none; }
+
+h1, h2, h3 {
+  font-weight: 800;
+  font-variation-settings: "wdth" var(--wdth-display);
+  line-height: 1;
+  letter-spacing: -.02em;
+  text-wrap: balance;
+}
+h1 { font-size: var(--fs-h1); }
+h2 { font-size: var(--fs-h2); }
+h3 { font-size: var(--fs-h3); line-height: 1.15; letter-spacing: -.01em; }
+p  { text-wrap: pretty; }
+
+::selection { background: var(--accent); color: var(--accent-ink); }
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ---------- Utilitários ---------- */
+.wrap {
+  width: 100%;
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section { padding-block: clamp(4rem, 9vw, var(--space-7)); }
+
+/* Eyebrow: só texto pequeno, sem linha (a linha lia como travessão) */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  font-variation-settings: "wdth" var(--wdth-condensed);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--eyebrow);
+}
+
+.lead { font-size: var(--fs-lg); color: var(--fg-muted); max-width: 46ch; }
+.muted { color: var(--fg-muted); }
+.accent { color: var(--eyebrow); }
+
+.section-head { display: grid; gap: var(--space-2); margin-bottom: var(--space-5); max-width: 760px; }
+.section-head--center { margin-inline: auto; text-align: center; justify-items: center; }
+
+.skip-link {
+  position: absolute;
+  left: var(--space-2);
+  top: -100px;
+  z-index: 100;
+  padding: .6rem 1rem;
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+}
+.skip-link:focus { top: var(--space-2); }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+
+/* ---------- Lenis (regras recomendadas pela lib) ---------- */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* ---------- Reveal on scroll ---------- */
+/* Só esconde se o JS estiver ativo (classe .js no <html>) */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
+  transition-delay: calc(var(--reveal-i, 0) * 90ms);
+}
+.js [data-reveal].is-visible { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+  .js [data-reveal] { opacity: 1; transform: none; }
+}
+
+/* ---------- Barra de rolagem nas cores da marca ----------
+   Fina, trilho azul quase preto, alça azul clara que fica amarela no hover.
+   Formato retangular com cantos de 4px (sem pílula, ver ANTI-PATTERNS). */
+html {
+  scrollbar-width: thin;                                   /* Firefox */
+  scrollbar-color: #2a4bb8 #030924;
+}
+::-webkit-scrollbar { width: 10px; height: 10px; }         /* Chrome, Edge, Safari */
+::-webkit-scrollbar-track { background: #030924; }
+::-webkit-scrollbar-thumb {
+  background: #2a4bb8;
+  border: 2px solid #030924;                               /* deixa a alça "solta" do trilho */
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover,
+::-webkit-scrollbar-thumb:active { background: var(--yellow); }
+::-webkit-scrollbar-corner { background: #030924; }
+/* menus e painéis com rolagem própria seguem o mesmo estilo */
+.drawer__panel, .search__panel { scrollbar-width: thin; scrollbar-color: #2a4bb8 transparent; }

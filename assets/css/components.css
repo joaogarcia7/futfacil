@@ -1,0 +1,174 @@
+/* ==========================================================================
+   Componentes: botões, chips, cards, marquee, accordion
+   ========================================================================== */
+
+/* Header, busca e menu lateral: ver header.css */
+
+/* ---------- Botões ---------- */
+.btn {
+  --btn-bg: transparent;
+  --btn-fg: var(--fg);
+  --btn-bd: var(--line-strong);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .55rem;
+  min-height: 44px;
+  padding: .7rem 1.25rem;
+  font-size: .875rem;
+  font-weight: 600;
+  letter-spacing: .01em;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  color: var(--btn-fg);
+  background: var(--btn-bg);
+  border: 1.5px solid var(--btn-bd);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  isolation: isolate;
+  transition: background var(--dur-fast) ease, color var(--dur-fast) ease,
+              border-color var(--dur-fast) ease, transform .12s ease;
+}
+.btn:active { transform: translateY(1px) scale(.99); }
+.btn--sm { min-height: 38px; padding: .5rem 1rem; font-size: .8125rem; }
+.btn--lg { min-height: 48px; padding: .8rem 1.5rem; font-size: .9375rem; }
+
+.btn--ghost:hover { border-color: var(--fg); }
+
+.btn--primary {
+  --btn-bg: var(--accent);
+  --btn-fg: var(--accent-ink);
+  --btn-bd: var(--accent);
+}
+.btn--primary:hover { --btn-bg: var(--accent-hover); --btn-bd: var(--accent-hover); }
+
+/* Texto que "rola" pra cima no hover: <span class="btn__label" data-text="Mesmo texto">Mesmo texto</span> */
+.btn__label { position: relative; display: inline-block; overflow: hidden; }
+.btn__label > span { display: inline-block; transition: transform .45s var(--ease-out); }
+.btn__label::after {
+  content: attr(data-text);
+  position: absolute; left: 0; top: 100%;
+  transition: transform .45s var(--ease-out);
+}
+.btn:hover .btn__label > span,
+.btn:hover .btn__label::after { transform: translateY(-100%); }
+
+.btn__icon { width: 18px; height: 18px; flex: none; transition: transform var(--dur) var(--ease-out); }
+.btn:hover .btn__icon { transform: translateX(3px); }
+
+/* ---------- Chips / filtros ---------- */
+.chips { display: flex; flex-wrap: wrap; gap: .5rem; }
+.chip {
+  min-height: 34px;
+  padding: .4rem .85rem;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--fg-muted);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  transition: all var(--dur-fast) ease;
+}
+.chip:hover { color: var(--fg); border-color: var(--fg); }
+.chip[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .3rem .65rem;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  font-variation-settings: "wdth" var(--wdth-condensed);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+/* ---------- Card base ---------- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: var(--space-4);
+  transition: border-color var(--dur) ease, transform var(--dur) var(--ease-out);
+}
+.card:hover { border-color: var(--line-strong); }
+
+/* ---------- Marquee (CSS puro, igual à referência) ----------
+   O conteúdo do track é duplicado no HTML; anima -50% em loop. */
+.marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+}
+.marquee__track {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  width: max-content;
+  animation: marquee 30s linear infinite;
+}
+.marquee:hover .marquee__track { animation-play-state: paused; }
+@keyframes marquee { to { transform: translateX(-50%); } }
+
+/* ---------- Accordion (FAQ) com <details> ---------- */
+.faq { border-top: 1px solid var(--line); }
+.faq__item { border-bottom: 1px solid var(--line); }
+.faq__q {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) 0;
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+}
+.faq__q::-webkit-details-marker { display: none; }
+.faq__q::after {
+  content: "+";
+  flex: none;
+  width: 32px; height: 32px;
+  display: grid; place-items: center;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  font-weight: 400;
+  transition: transform var(--dur) var(--ease-out), background var(--dur-fast);
+}
+.faq__item[open] .faq__q::after { transform: rotate(45deg); background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.faq__a { padding: 0 0 var(--space-3); color: var(--fg-muted); max-width: 70ch; }
+
+/* ---------- Marcação de texto (rabisco de marca-texto) ----------
+   Inspirado no .hero__mark da peleacademia.com: faixa atrás da 1ª linha do título.
+   O fundo fica num pseudo-elemento recortado com pontas irregulares,
+   então o texto nunca é cortado.  Uso: <span class="mark">Seu futebol</span> */
+.mark {
+  position: relative;
+  isolation: isolate;
+  display: block;
+  width: fit-content;
+  white-space: nowrap; /* a faixa é sempre uma linha só */
+  padding: .1em .32em .04em;
+  margin-bottom: .12em;
+  color: var(--accent-ink);
+}
+.mark::before {
+  content: "";
+  position: absolute;
+  inset: 0 -.06em;
+  z-index: -1;
+  background: var(--accent);
+  transform: rotate(-1.1deg);
+  /* bordas de pincel: pontas esquerda/direita "quebradas", topo e base levemente ondulados */
+  clip-path: polygon(
+    1.5% 6%, 9% 1%, 24% 3.5%, 41% .5%, 58% 3%, 76% 0%, 92% 2.5%, 98.5% 0%,
+    100% 14%, 97.5% 27%, 99.5% 41%, 96.5% 55%, 99% 68%, 97% 83%, 99.5% 97%,
+    90% 100%, 73% 96.5%, 55% 99.5%, 37% 96%, 19% 99.5%, 6% 96.5%, .5% 100%,
+    2.5% 86%, 0% 72%, 3% 58%, .5% 44%, 2.5% 30%, 0% 17%
+  );
+}

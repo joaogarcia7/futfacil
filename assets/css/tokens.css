@@ -1,0 +1,97 @@
+/* ==========================================================================
+   FUTFÁCIL: design tokens
+   Troque cores/medidas aqui; o resto do CSS só consome variáveis.
+   ========================================================================== */
+
+:root {
+  /* Fonte: Archivo é variável em peso (100 a 900) e largura (62 a 125%) */
+  --font: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --wdth-display: 118;   /* títulos mais "expandidos", cara de esporte */
+  --wdth-condensed: 75;  /* labels/eyebrows condensados */
+
+  /* Marca (cores globais do site atual, Elementor) */
+  --yellow: #ffc515;        /* primária */
+  --yellow-hover: #ffd24d;
+  --blue: #122b7e;          /* azul da marca */
+  --blue-700: #0e2165;
+  --blue-900: #091547;      /* fundo escuro: hero, menus, footer */
+  --blue-950: #060f33;
+
+  /* Tema claro (padrão das seções) */
+  --bg: #f3f5fa;
+  --surface: #ffffff;
+  --surface-2: #e7ebf5;
+  --fg: #0b1640;
+  --fg-muted: #56618a;
+  --line: rgba(18, 43, 126, .12);
+  --line-strong: rgba(18, 43, 126, .24);
+  --eyebrow: var(--blue);
+  --focus: var(--blue);
+
+  --accent: var(--yellow);  /* CTA, destaques, estado ativo */
+  --accent-hover: var(--yellow-hover);
+  --accent-ink: var(--blue-900); /* texto sobre o amarelo */
+  --accent-soft: rgba(255, 197, 21, .16);
+
+  /* Espaçamento */
+  --space-1: .5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2rem;
+  --space-5: 3rem;
+  --space-6: 4.5rem;
+  --space-7: 7rem;
+
+  /* Layout */
+  --maxw: 1180px;          /* igual à Pelé Academia */
+  --gutter: clamp(16px, 4vw, 40px);
+  --nav-h: 86px;          /* espaço reservado ao rolar até âncoras */
+  --radius: 10px;          /* cards: 4 a 12px */
+  --radius-sm: 6px;        /* botões, badges, chips: máx. 8px */
+
+  /* Tipografia fluida */
+  /* escala calibrada pela peleacademia.com */
+  --fs-xs: .75rem;
+  --fs-sm: .8125rem;
+  --fs-base: .9375rem;
+  --fs-lg: 1rem;
+  --fs-h3: clamp(1.05rem, 1rem + .4vw, 1.25rem);
+  --fs-h2: clamp(1.6rem, 1.1rem + 1.8vw, 2.5rem);
+  --fs-h1: clamp(1.9rem, 1.1rem + 2.6vw, 3.25rem);
+
+  /* Movimento */
+  --ease-out: cubic-bezier(.16, 1, .3, 1);
+  --ease-in-out: cubic-bezier(.65, 0, .35, 1);
+  --dur-fast: .18s;
+  --dur: .35s;
+  --dur-slow: .9s;
+}
+
+/* Tema escuro (azul): aplique .theme-dark no container.
+   Os mesmos tokens são redefinidos, então os componentes funcionam nos dois. */
+.theme-dark {
+  --bg: var(--blue-900);
+  --surface: var(--blue-700);
+  --surface-2: #142a7a;
+  --fg: #ffffff;
+  --fg-muted: #a9b4d9;
+  --line: rgba(255, 255, 255, .12);
+  --line-strong: rgba(255, 255, 255, .22);
+  --eyebrow: var(--yellow);
+  --focus: var(--yellow);
+  color: var(--fg);
+}
+
+/* Tema claro dentro de um container escuro (ex.: cards brancos sobre foto) */
+.theme-light {
+  --bg: #f3f5fa;
+  --surface: #ffffff;
+  --surface-2: #e7ebf5;
+  --fg: #0b1640;
+  --fg-muted: #56618a;
+  --line: rgba(18, 43, 126, .12);
+  --line-strong: rgba(18, 43, 126, .24);
+  --eyebrow: var(--blue);
+  --focus: var(--blue);
+  color: var(--fg);
+}

@@ -1,0 +1,15 @@
+# sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# editores
+.vscode/
+.idea/
+
+# dependências e build (caso o projeto ganhe um no futuro)
+node_modules/
+dist/
+
+# cópias de teste
+_teste-*.html

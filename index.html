@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Futfácil: seja visto por clubes e agentes do futebol brasileiro</title>
+  <meta name="description" content="Crie seu perfil de jogador, publique seus vídeos e seja encontrado por mais de 300 clubes e agentes do Brasil. Clubes e agentes acessam grátis.">
+  <meta name="theme-color" content="#070d09">
+  <script>document.documentElement.classList.add("js")</script>
+
+  <!-- Fonte: Archivo (variável em peso e largura) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&display=swap">
+
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/header.css">
+  <link rel="stylesheet" href="assets/css/sections.css">
+</head>
+<body id="top">
+  <a href="#conteudo" class="skip-link">Pular para o conteúdo</a>
+
+  <!-- ===================== HEADER ===================== -->
+  <!--
+    Links de páginas internas apontam para o site atual (futfacil.com.br)
+    enquanto as páginas novas não existem. Troque por caminhos relativos depois.
+  -->
+  <header class="nav theme-dark" data-nav>
+    <div class="nav__bar">
+      <a class="nav__logo" href="#top" aria-label="Futfácil, início">
+        <img src="assets/img/logo-futfacil-branco.png" alt="Futfácil" width="431" height="126">
+      </a>
+
+      <nav class="nav__menu" aria-label="Principal">
+        <ul class="nav__links">
+          <li><a class="nav__link is-active" href="#top" aria-current="page">Home</a></li>
+
+          <!-- Jogadores: mega dropdown com as posições do banco atual -->
+          <li class="dd" data-dd>
+            <button class="nav__link dd__trigger" type="button" aria-expanded="false" aria-controls="dd-jogadores">
+              Jogadores
+              <svg class="dd__caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="dd__menu dd__menu--mega" id="dd-jogadores">
+              <div class="dd__col">
+                <span class="dd__title">Buscar por posição</span>
+                <ul class="dd__grid">
+                  <li><a href="https://futfacil.com.br/listing-category/goleiros/"><span class="dd__pos">GOL</span>Goleiros</a></li>
+                  <li><a href="https://futfacil.com.br/listing-category/zagueiros/"><span class="dd__pos">ZAG</span>Zagueiros</a></li>
+                  <li><a href="https://futfacil.com.br/listing-category/laterais/"><span class="dd__pos">LAT</span>Laterais</a></li>
+                  <li><a href="https://futfacil.com.br/listing-category/volantes/"><span class="dd__pos">VOL</span>Volantes</a></li>
+                  <li><a href="https://futfacil.com.br/listing-category/meias/"><span class="dd__pos">MEI</span>Meias</a></li>
+                  <li><a href="https://futfacil.com.br/listing-category/atacante/"><span class="dd__pos">ATA</span>Atacantes</a></li>
+                </ul>
+                <a class="dd__all" href="https://futfacil.com.br/jogadores/">Ver todos os jogadores</a>
+              </div>
+              <a class="dd__promo" href="https://futfacil.com.br/criar-conta/">
+                <span class="badge">30 dias grátis</span>
+                <strong>É jogador? Entre na vitrine.</strong>
+                <span>Monte seu perfil e seja visto por +300 clubes e agentes.</span>
+                <span class="dd__promo-cta">Criar meu perfil</span>
+              </a>
+            </div>
+          </li>
+
+          <li class="dd" data-dd>
+            <button class="nav__link dd__trigger" type="button" aria-expanded="false" aria-controls="dd-clubes">
+              Clubes &amp; Contratantes
+              <svg class="dd__caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="dd__menu" id="dd-clubes">
+              <ul class="dd__list">
+                <li><a href="https://futfacil.com.br/clubes-contratantes/"><strong>Como funciona</strong><span>Acesso grátis ao banco de atletas</span></a></li>
+                <li><a href="https://futfacil.com.br/clube-parceiro-proposta/"><strong>Seja clube parceiro</strong><span>Formação de elenco com nossa equipe</span></a></li>
+                <li><a href="https://futfacil.com.br/jogadores/"><strong>Buscar jogadores</strong><span>Filtre por posição e veja vídeos</span></a></li>
+              </ul>
+            </div>
+          </li>
+
+          <li><a class="nav__link" href="#planos">Planos</a></li>
+
+          <li class="dd" data-dd>
+            <button class="nav__link dd__trigger" type="button" aria-expanded="false" aria-controls="dd-mais">
+              Mais
+              <svg class="dd__caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="dd__menu dd__menu--right" id="dd-mais">
+              <ul class="dd__list dd__list--compact">
+                <li><a href="https://futfacil.com.br/como-criar-perfil/">Como criar perfil</a></li>
+                <li><a href="https://futfacil.com.br/duvidas-frequentes/">Dúvidas frequentes</a></li>
+                <li><a href="https://futfacil.com.br/formas-de-pagamento/">Formas de pagamento</a></li>
+                <li><a href="https://futfacil.com.br/blog/">Blog</a></li>
+                <li><a href="https://futfacil.com.br/fale-conosco/">Fale conosco</a></li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="nav__actions">
+        <button class="nav__icon" type="button" data-search-open aria-label="Pesquisar jogadores" aria-controls="search" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        </button>
+        <a class="btn btn--primary btn--sm nav__signin" href="https://futfacil.com.br/area-de-login/">Entrar</a>
+        <button class="nav__icon nav__icon--light" type="button" data-drawer-open aria-label="Abrir menu" aria-controls="drawer" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 9h12M6 15h12"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================== BUSCA (overlay) ===================== -->
+  <!-- Envia para a busca real do site atual (HivePress): ?post_type=hp_listing&_category=ID&s=termo -->
+  <div class="search theme-dark" id="search" role="dialog" aria-modal="true" aria-label="Pesquisar jogadores" hidden data-lenis-prevent>
+    <div class="search__backdrop" data-search-close></div>
+    <form class="search__panel" action="https://futfacil.com.br/" method="get">
+      <input type="hidden" name="post_type" value="hp_listing">
+      <div class="search__field">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <input type="search" name="s" placeholder="Nome do jogador, cidade, clube…" maxlength="256" autocomplete="off" aria-label="Termo da busca">
+        <kbd class="search__kbd">Esc</kbd>
+      </div>
+      <fieldset class="search__filters">
+        <legend>Posição</legend>
+        <div class="chips">
+          <label class="chip chip--radio"><input type="radio" name="_category" value="" checked><span>Todas</span></label>
+          <label class="chip chip--radio"><input type="radio" name="_category" value="54"><span>Goleiros</span></label>
+          <label class="chip chip--radio"><input type="radio" name="_category" value="59"><span>Zagueiros</span></label>
+          <label class="chip chip--radio"><input type="radio" name="_category" value="55"><span>Laterais</span></label>
+          <label class="chip chip--radio"><input type="radio" name="_category" value="58"><span>Volantes</span></label>
+          <label class="chip chip--radio"><input type="radio" name="_category" value="57"><span>Meias</span></label>
+          <label class="chip chip--radio"><input type="radio" name="_category" value="52"><span>Atacantes</span></label>
+        </div>
+      </fieldset>
+      <div class="search__foot">
+        <span class="muted">Dica: aperte <kbd>/</kbd> em qualquer página para buscar.</span>
+        <button class="btn btn--primary" type="submit">
+          Pesquisar
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- ===================== MENU LATERAL (botão ☰) ===================== -->
+  <div class="drawer theme-dark" id="drawer" role="dialog" aria-modal="true" aria-label="Menu" hidden data-lenis-prevent>
+    <div class="drawer__backdrop" data-drawer-close></div>
+    <aside class="drawer__panel">
+      <div class="drawer__head">
+        <span class="nav__logo"><img src="assets/img/logo-futfacil-branco.png" alt="Futfácil" width="431" height="126"></span>
+        <button class="nav__icon" type="button" data-drawer-close aria-label="Fechar menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+
+      <nav class="drawer__nav" aria-label="Menu completo">
+        <a href="#top">Home</a>
+        <a href="https://futfacil.com.br/jogadores/">Jogadores</a>
+        <a href="https://futfacil.com.br/clubes-contratantes/">Clubes &amp; Contratantes</a>
+        <a href="#planos">Planos</a>
+        <a href="https://futfacil.com.br/clube-parceiro-proposta/">Seja clube parceiro</a>
+      </nav>
+
+      <div class="drawer__group">
+        <span class="dd__title">Ajuda</span>
+        <a href="https://futfacil.com.br/como-criar-perfil/">Como criar perfil</a>
+        <a href="https://futfacil.com.br/duvidas-frequentes/">Dúvidas frequentes</a>
+        <a href="https://futfacil.com.br/formas-de-pagamento/">Formas de pagamento</a>
+        <a href="https://futfacil.com.br/fale-conosco/">Fale conosco</a>
+      </div>
+
+      <div class="drawer__foot">
+        <a class="btn btn--primary btn--lg" href="https://futfacil.com.br/criar-conta/">Criar perfil grátis</a>
+        <a class="btn btn--ghost btn--lg" href="https://futfacil.com.br/area-de-login/">Minha conta</a>
+      </div>
+    </aside>
+  </div>
+
+  <main id="conteudo">
+
+    <!-- ===================== HERO ===================== -->
+    <section class="hero theme-dark" id="hero">
+      <!-- uma foto por slide; a ordem segue a dos textos (jogador, clube) -->
+      <div class="hero__bg" aria-hidden="true">
+        <div class="hero__photo hero__photo--neymar is-active" data-hero-photo></div>
+        <div class="hero__photo hero__photo--cr7" data-hero-photo></div>
+      </div>
+      <div class="wrap hero__inner">
+
+        <!-- slides: alternam sozinhos a cada 5s (mesmo tempo da peleacademia.com) -->
+        <div class="hero__slides" data-hero-slides>
+        <div class="hero__copy is-active" id="hero-jogador" role="tabpanel" aria-labelledby="tab-jogador">
+          <h1 class="hero__title"><span class="mark">Seu futebol</span> na vitrine dos clubes.</h1>
+          <p class="lead">Monte seu perfil com posição, histórico e vídeos em campo. Mais de 300 clubes e agentes do Brasil usam a Futfácil para encontrar jogadores.</p>
+          <div class="hero__ctas">
+            <a class="btn btn--primary btn--lg" href="/criar-conta/">
+              <span class="btn__label" data-text="Comece 30 dias grátis"><span>Comece 30 dias grátis</span></span>
+            </a>
+            <a class="btn btn--ghost btn--lg" href="#como-funciona">Ver como funciona</a>
+          </div>
+        </div>
+
+        <div class="hero__copy" id="hero-clube" role="tabpanel" aria-labelledby="tab-clube" inert>
+          <h1 class="hero__title"><span class="mark">Seu reforço</span> está na vitrine.</h1>
+          <p class="lead">Busque atletas por posição, veja vídeos e histórico. O acesso para clubes e agentes é gratuito e não cobramos comissão.</p>
+          <div class="hero__ctas">
+            <a class="btn btn--primary btn--lg" href="#jogadores">
+              <span class="btn__label" data-text="Buscar jogadores"><span>Buscar jogadores</span></span>
+            </a>
+            <a class="btn btn--ghost btn--lg" href="#clubes">Quero ser clube parceiro</a>
+          </div>
+        </div>
+        </div>
+
+        <div class="hero__switch" role="tablist" aria-label="Escolha seu perfil">
+          <span class="hero__switch-label" id="switch-label">Você é:</span>
+          <button type="button" role="tab" id="tab-jogador" aria-selected="true" aria-controls="hero-jogador">Jogador</button>
+          <button type="button" role="tab" id="tab-clube" aria-selected="false" aria-controls="hero-clube">Clube ou agente</button>
+        </div>
+
+        <div class="hero__meta">
+          <div><div class="stat__num">+300</div><div class="stat__label">clubes e agentes</div></div>
+          <div><div class="stat__num">30 dias</div><div class="stat__label">grátis pra começar</div></div>
+          <div><div class="stat__num">R$ 0</div><div class="stat__label">para clubes e agentes</div></div>
+        </div>
+      </div>
+      <a class="hero__scroll" href="#como-funciona">Role a página</a>
+    </section>
+
+    <!-- ===================== FAIXA MARQUEE ===================== -->
+    <div class="strip" aria-hidden="true">
+      <div class="marquee">
+        <div class="marquee__track">
+          <!-- conteúdo duplicado = loop sem emenda -->
+          <span class="strip__item">Goleiros</span><span class="strip__item">Zagueiros</span><span class="strip__item">Laterais</span><span class="strip__item">Volantes</span><span class="strip__item">Meias</span><span class="strip__item">Atacantes</span>
+          <span class="strip__item">Goleiros</span><span class="strip__item">Zagueiros</span><span class="strip__item">Laterais</span><span class="strip__item">Volantes</span><span class="strip__item">Meias</span><span class="strip__item">Atacantes</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== ATLETAS (2ª seção) ===================== -->
+    <!-- Troca de seção igual à peleacademia.com (#historia): a foto fica parada (fixed)
+         e a seção desliza por cima dela ao rolar. -->
+    <section class="section athletes theme-dark" id="jogadores">
+      <div class="athletes__bg" aria-hidden="true"></div>
+      <div class="wrap athletes__grid">
+        <!-- esquerda: prévia dos atletas -->
+        <div class="athletes__preview">
+          <div class="section-head" data-reveal>
+            <span class="eyebrow">Vitrine</span>
+            <h2>Jogadores em destaque.</h2>
+            <p class="lead">Uma amostra de quem já está na vitrine. Clubes e agentes encontram aqui o próximo reforço.</p>
+          </div>
+          <!-- PLAYERS (main.js) mostra só uma prévia: data-limit -->
+          <div class="players__grid athletes__players theme-light" data-players data-limit="4" aria-live="polite"></div>
+          <div class="players__more">
+            <!-- TODO: configurar o destino do "Ver todos" depois -->
+            <a class="btn btn--primary" href="#" data-ver-todos>
+              <span class="btn__label" data-text="Ver todos os jogadores"><span>Ver todos os jogadores</span></span>
+            </a>
+          </div>
+        </div>
+
+        <!-- direita: cards de benefícios -->
+        <ul class="fcards theme-light" data-reveal-group>
+          <li class="fcard">
+            <span class="fcard__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></span>
+            <div>
+              <h3 class="fcard__title">Busca por posição</h3>
+              <p>Do goleiro ao atacante: clubes filtram e chegam direto no seu perfil.</p>
+            </div>
+          </li>
+          <li class="fcard">
+            <span class="fcard__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z"/></svg></span>
+            <div>
+              <h3 class="fcard__title">Vídeos em campo</h3>
+              <p>Seus lances falam mais que qualquer currículo.</p>
+            </div>
+          </li>
+          <li class="fcard">
+            <span class="fcard__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 7.5-2"/></svg></span>
+            <div>
+              <h3 class="fcard__title">Acesso livre para clubes</h3>
+              <p>Clubes e agentes buscam atletas de graça, sem comissão.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===================== COMO FUNCIONA (bola 3D no gramado) ===================== -->
+    <section class="section ballsec theme-dark" id="como-funciona">
+      <!-- pixels de HUD flutuando no fundo (desenhados pelo ball.js) -->
+      <canvas class="ballsec__pixels" data-pixels aria-hidden="true"></canvas>
+      <div class="wrap">
+        <div class="ballsec__head" data-reveal>
+          <div>
+            <span class="eyebrow">Como funciona</span>
+            <h2>Três passos até a vitrine.</h2>
+          </div>
+          <p class="ballsec__aside">Leva poucos minutos. Você cuida do futebol, a gente coloca seu perfil na frente de quem contrata.</p>
+        </div>
+
+        <div class="ballsec__stage" data-ball-stage>
+          <!-- linhas ligando cada passo à bola (desenhadas pelo ball.js) -->
+          <svg class="ballsec__links" data-ball-links aria-hidden="true"></svg>
+
+          <ol class="ballsec__col ballsec__col--left">
+            <li class="feat">
+              <span class="feat__icon feat__icon--num" aria-hidden="true">1</span>
+              <h3>Crie sua conta</h3>
+              <p>Cadastro rápido, só com o básico. Em poucos segundos você já está dentro.</p>
+            </li>
+            <li class="feat">
+              <span class="feat__icon feat__icon--num" aria-hidden="true">2</span>
+              <h3>Monte seu perfil</h3>
+              <p>Posição, clubes por onde passou, características e vídeos seus em campo.</p>
+            </li>
+            <li>
+              <a class="btn btn--primary btn--lg ballsec__cta" href="https://futfacil.com.br/criar-conta/">
+                <span class="btn__label" data-text="Quero participar"><span>Quero participar</span></span>
+              </a>
+            </li>
+          </ol>
+
+          <div class="ballsec__ball">
+            <!-- gramado em perspectiva com as linhas do campo -->
+            <div class="ballsec__pitch" aria-hidden="true">
+            <svg class="ballsec__field" viewBox="0 0 1000 600" preserveAspectRatio="none">
+              <rect x="20" y="20" width="960" height="560" rx="4"/>
+              <line x1="500" y1="20" x2="500" y2="580"/>
+              <circle cx="500" cy="300" r="105"/>
+              <circle cx="500" cy="300" r="4" class="dot"/>
+              <rect x="20" y="150" width="140" height="300"/>
+              <rect x="840" y="150" width="140" height="300"/>
+              <rect x="20" y="225" width="50" height="150"/>
+              <rect x="930" y="225" width="50" height="150"/>
+            </svg>
+            </div>
+            <span class="ballsec__shadow" aria-hidden="true"></span>
+            <canvas class="ballsec__canvas" data-ball aria-hidden="true"></canvas>
+          </div>
+
+          <ol class="ballsec__col ballsec__col--right" start="3">
+            <li class="feat">
+              <span class="feat__icon feat__icon--num" aria-hidden="true">3</span>
+              <h3>Publique e seja visto</h3>
+              <p>Escolha um plano, publique e apareça para clubes e agentes de todo o Brasil.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== CONTRATADOS ===================== -->
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head" data-reveal>
+          <span class="eyebrow">Prova real</span>
+          <h2>Vistos aqui. Contratados lá.</h2>
+          <p class="lead">Atletas que foram encontrados por clubes através da Futfácil.</p>
+        </div>
+        <div class="hired" data-reveal-group>
+          <!-- Trocar pelas fotos reais + nome, clube e ano -->
+          <figure class="hired__item"><figcaption class="hired__cap"><strong>Nome do atleta</strong>Clube, ano</figcaption></figure>
+          <figure class="hired__item"><figcaption class="hired__cap"><strong>Nome do atleta</strong>Clube, ano</figcaption></figure>
+          <figure class="hired__item"><figcaption class="hired__cap"><strong>Nome do atleta</strong>Clube, ano</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== PLANOS ===================== -->
+    <section class="section" id="planos">
+      <div class="wrap">
+        <div class="section-head section-head--center" data-reveal>
+          <span class="eyebrow">Planos para jogadores</span>
+          <h2>Quanto mais tempo, mais chances.</h2>
+          <p class="lead">Comece grátis e evolua quando quiser. Sem fidelidade escondida.</p>
+        </div>
+        <div class="plans" data-reveal-group>
+          <article class="card plan">
+            <span class="plan__name">Grátis</span>
+            <div class="plan__price">R$ 0</div>
+            <span class="plan__note">Para testar a plataforma</span>
+            <ul class="plan__list"><li>Perfil básico</li><li>Visibilidade limitada</li></ul>
+            <a class="btn btn--ghost" href="/submit-listing/package/6/">Criar perfil</a>
+          </article>
+          <article class="card plan">
+            <span class="plan__name">Mensal</span>
+            <div class="plan__price">R$ 19,90 <small>/mês</small></div>
+            <span class="plan__note">Cobrado todo mês</span>
+            <ul class="plan__list"><li>Perfil completo</li><li>Vídeos em campo</li><li>Mais visualizações</li></ul>
+            <a class="btn btn--ghost" href="/submit-listing/package/7/">Assinar</a>
+          </article>
+          <article class="card plan">
+            <span class="plan__name">Trimestral</span>
+            <div class="plan__price">R$ 52,90</div>
+            <span class="plan__note">3 meses, sai por R$ 17,63/mês</span>
+            <ul class="plan__list"><li>Tudo do Mensal</li><li>Boa exposição</li></ul>
+            <a class="btn btn--ghost" href="/submit-listing/package/10/">Assinar</a>
+          </article>
+          <article class="card plan plan--featured">
+            <span class="badge">Mais escolhido</span>
+            <span class="plan__name">Semestral</span>
+            <div class="plan__price">R$ 99,90</div>
+            <span class="plan__note">6 meses, sai por R$ 16,65/mês</span>
+            <ul class="plan__list"><li>Tudo do Trimestral</li><li>Grande exposição</li></ul>
+            <a class="btn btn--primary" href="/submit-listing/package/11/">Assinar</a>
+          </article>
+          <article class="card plan">
+            <span class="plan__name">Anual</span>
+            <div class="plan__price">R$ 219,90</div>
+            <span class="plan__note">12 meses, sai por R$ 18,33/mês</span>
+            <ul class="plan__list"><li>Visualização máxima</li><li>Acompanhamento da equipe</li></ul>
+            <a class="btn btn--ghost" href="/submit-listing/package/12/">Assinar</a>
+          </article>
+        </div>
+        <p class="plans__foot">A Futfácil não garante contratação. A escolha do atleta é responsabilidade dos clubes.</p>
+      </div>
+    </section>
+
+    <!-- ===================== CLUBES ===================== -->
+    <section class="section" id="clubes">
+      <div class="wrap clubs">
+        <div data-reveal>
+          <span class="eyebrow">Para clubes e agentes</span>
+          <h2>Seu banco de talentos, de graça.</h2>
+          <p class="lead">Clubes parceiros usam os perfis da Futfácil como base para montar elenco.</p>
+          <ul class="clubs__list">
+            <li><div><strong>Acesso gratuito</strong><span>Clubes e agentes não pagam para buscar atletas.</span></div></li>
+            <li><div><strong>Sem comissão</strong><span>Não cobramos nada sobre a contratação.</span></div></li>
+            <li><div><strong>Formação de elenco</strong><span>Precisa de ajuda? Nossa equipe faz a triagem com você.</span></div></li>
+          </ul>
+          <a class="btn btn--primary btn--lg" href="/clube-parceiro-proposta/">
+            <span class="btn__label" data-text="Quero ser clube parceiro"><span>Quero ser clube parceiro</span></span>
+          </a>
+        </div>
+        <div class="clubs__visual" data-reveal aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <!-- ===================== FAQ ===================== -->
+    <section class="section" id="duvidas">
+      <div class="wrap">
+        <div class="section-head" data-reveal>
+          <span class="eyebrow">Dúvidas</span>
+          <h2>Perguntas frequentes.</h2>
+        </div>
+        <div class="faq" data-reveal>
+          <details class="faq__item">
+            <summary class="faq__q">A Futfácil garante que vou ser contratado?</summary>
+            <p class="faq__a">Não. A gente coloca seu perfil na frente de clubes e agentes, mas a decisão de contratar é sempre do clube.</p>
+          </details>
+          <details class="faq__item">
+            <summary class="faq__q">Como funcionam os 30 dias grátis?</summary>
+            <p class="faq__a">[Confirmar regra] Você cria o perfil e usa por 30 dias sem pagar. Depois escolhe o plano que preferir.</p>
+          </details>
+          <details class="faq__item">
+            <summary class="faq__q">Clubes e agentes pagam alguma coisa?</summary>
+            <p class="faq__a">Não. O acesso ao banco de atletas é gratuito e não cobramos comissão. O serviço de formação de elenco é contratado à parte.</p>
+          </details>
+          <details class="faq__item">
+            <summary class="faq__q">Quais as formas de pagamento?</summary>
+            <p class="faq__a">[Confirmar] Pix, cartão de crédito e boleto.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== CTA FINAL ===================== -->
+    <section class="section">
+      <div class="wrap">
+        <div class="cta" data-reveal>
+          <h2>Quer viver do futebol?</h2>
+          <p>Crie seu perfil hoje e comece a aparecer para quem contrata.</p>
+          <a class="btn btn--primary btn--lg" href="/criar-conta/">
+            <span class="btn__label" data-text="Criar meu perfil grátis"><span>Criar meu perfil grátis</span></span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="footer theme-dark">
+    <div class="wrap">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <a class="nav__logo" href="#top">
+            <img src="assets/img/logo-futfacil-branco.png" alt="Futfácil" width="431" height="126">
+          </a>
+          <p>A vitrine que conecta jogadores a clubes e agentes do futebol brasileiro.</p>
+        </div>
+        <div>
+          <h4>Institucional</h4>
+          <ul>
+            <li><a href="/futfacil/">Sobre a Futfácil</a></li>
+            <li><a href="/clube-parceiro-proposta/">Quero ser clube parceiro</a></li>
+            <li><a href="/fale-conosco/">Fale conosco</a></li>
+            <li><a href="/blog/">Blog</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Ajuda</h4>
+          <ul>
+            <li><a href="/como-criar-perfil/">Como criar perfil</a></li>
+            <li><a href="/duvidas-frequentes/">Dúvidas frequentes</a></li>
+            <li><a href="/formas-de-pagamento/">Formas de pagamento</a></li>
+            <li><a href="/lgpd/">LGPD</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Siga</h4>
+          <div class="footer__social">
+            <a href="https://www.instagram.com/futfacil/" aria-label="Instagram" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+            </a>
+            <a href="https://www.youtube.com/@FutFacill" aria-label="YouTube" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="4"/><path d="M10 9l5 3-5 3z" fill="currentColor"/></svg>
+            </a>
+            <a href="https://www.facebook.com/profile.php?id=100090326072154" aria-label="Facebook" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h-2a4 4 0 0 0-4 4v3H7v4h2v7h4v-7h3l1-4h-4V7a1 1 0 0 1 1-1h2z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="footer__mega" aria-hidden="true">Futfácil</div>
+      <div class="footer__bottom">
+        <span>© <span data-year>2026</span> Futfácil. Todos os direitos reservados.</span>
+        <a href="#top">Voltar ao topo</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/ball.js" defer></script>
+</body>
+</html>

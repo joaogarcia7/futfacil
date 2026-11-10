@@ -1,0 +1,622 @@
+/* ==========================================================================
+   Seções da home
+   ========================================================================== */
+
+/* ---------- Hero ---------- */
+/* Hero de ponta a ponta, ocupando a tela inteira. */
+.hero {
+  position: relative;
+  isolation: isolate;
+  min-height: 100svh;
+  display: flex;
+  align-items: center; /* conteúdo no meio da tela, não colado embaixo */
+  padding-top: calc(var(--bar-h, 68px) + var(--space-3));
+  padding-bottom: var(--space-4);
+  overflow: hidden;
+}
+/* Fotos do hero: uma por slide, inteiras, sem película colorida por cima.
+   Igual aos slides da peleacademia.com: no desktop a foto nova entra pela direita
+   e a antiga sai pela esquerda (1,1s); no celular elas só se cruzam (fade de .8s).
+   Para trocar uma foto, substitua o arquivo em assets/img/. */
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  background: #000;
+}
+.hero__photo {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-repeat: no-repeat;
+  transform: translateX(100%);
+  transition: transform 1.1s cubic-bezier(.65, 0, .35, 1);
+  will-change: transform;
+}
+.hero__photo.is-active  { transform: none; }
+.hero__photo.is-leaving { transform: translateX(-100%); }
+.hero__photo.no-anim    { transition: none; }
+.hero__photo--neymar { background-image: url("../img/hero-neymar.png"); background-position: 72% 40%; }
+.hero__photo--cr7    { background-image: url("../img/hero-cr7.png");    background-position: 50% 65%; }
+
+@media (max-width: 719px) {
+  .hero__photo { transform: none; opacity: 0; transition: opacity .8s ease; }
+  .hero__photo.is-active { opacity: 1; }
+  .hero__photo.is-leaving { transform: none; opacity: 0; }
+  .hero__photo--neymar { background-position: 71% 40%; }
+  .hero__photo--cr7    { background-position: 72% center; }
+  /* no celular o texto fica em cima do jogador: sombra neutra (não azul) só pra leitura */
+  .hero__bg::after { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(0, 0, 0, .15) 0%, rgba(0, 0, 0, .6) 55%, rgba(0, 0, 0, .75) 100%); }
+}
+
+/* conteúdo num container centralizado (não colado na borda esquerda) */
+.hero__inner { display: grid; gap: var(--space-4); }
+
+/* Troca de público: pequena, abaixo dos botões */
+.hero__switch {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .25rem 1.1rem;
+  font-size: .875rem;
+}
+.hero__switch-label { color: var(--fg-muted); }
+.hero__switch button {
+  position: relative;
+  padding: .35rem 0;
+  font-weight: 600;
+  color: var(--fg-muted);
+  transition: color var(--dur-fast) ease;
+}
+.hero__switch button::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur) var(--ease-out);
+}
+.hero__switch button:hover { color: var(--fg); }
+.hero__switch button[aria-selected="true"] { color: var(--fg); }
+.hero__switch button[aria-selected="true"]::after { transform: scaleX(1); }
+/* enquanto passa sozinho, o sublinhado enche em 5s (mostra quando vai trocar) */
+.hero__switch.is-playing button[aria-selected="true"]::after { animation: hero-progress var(--slide-ms, 5000ms) linear; }
+@keyframes hero-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* Slides do hero: os dois textos ocupam a mesma célula do grid.
+   Tempo e curva iguais aos slides da peleacademia.com (troca a cada 5s, transição de 1,1s). */
+.hero__slides { display: grid; overflow: hidden; }
+.hero__copy {
+  grid-area: 1 / 1;
+  display: grid;
+  gap: var(--space-3);
+  align-content: start;
+  opacity: 0;
+  transform: translateX(56px);          /* espera à direita */
+  transition: transform 1.1s cubic-bezier(.65, 0, .35, 1), opacity .8s ease;
+}
+/* o texto que sai some rápido; o que entra só aparece depois, pra nunca sobrepor */
+.hero__copy.is-active { opacity: 1; transform: none; transition: transform 1.1s cubic-bezier(.65, 0, .35, 1), opacity .6s ease .35s; }
+.hero__copy.is-leaving { opacity: 0; transform: translateX(-56px); transition: transform 1.1s cubic-bezier(.65, 0, .35, 1), opacity .3s ease; } /* sai pela esquerda */
+.hero__copy.no-anim { transition: none; }
+
+.hero__title { text-transform: uppercase; max-width: 16ch; }
+.hero__title em { font-style: normal; }
+.hero__ctas { display: flex; flex-wrap: wrap; gap: .75rem; }
+
+.hero__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+  padding-top: var(--space-4);
+  margin-top: var(--space-2);
+  border-top: 1px solid var(--line);
+}
+.stat__num {
+  font-size: clamp(1.35rem, 1rem + 1vw, 1.85rem);
+  font-weight: 800;
+  font-variation-settings: "wdth" var(--wdth-display);
+  line-height: 1;
+}
+.stat__label { font-size: var(--fs-sm); color: var(--fg-muted); }
+
+.hero__scroll {
+  position: absolute;
+  right: var(--gutter);
+  bottom: var(--space-6);
+  writing-mode: vertical-rl;
+  font-size: var(--fs-xs);
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  text-decoration: none;
+}
+@media (max-width: 719px) { .hero__scroll { display: none; } }
+
+/* ---------- Faixa marquee ---------- */
+.strip { border-block: 1px solid var(--line); padding-block: var(--space-3); background: var(--surface); }
+.strip__item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-5);
+  font-size: clamp(.95rem, .8rem + .6vw, 1.3rem);
+  font-weight: 800;
+  font-variation-settings: "wdth" var(--wdth-display);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.strip__item::after { content: ""; width: 8px; height: 8px; background: var(--accent); }
+
+/* ---------- Como funciona ---------- */
+/* Escada: cada passo desce e anda pra direita (é uma sequência de verdade) */
+.steps { display: grid; gap: var(--space-3); counter-reset: step; }
+@media (min-width: 860px) {
+  .steps { grid-template-columns: repeat(12, 1fr); column-gap: var(--space-4); }
+  .steps > :nth-child(1) { grid-column: 1 / span 5; }
+  .steps > :nth-child(2) { grid-column: 6 / span 4; margin-top: var(--space-6); }
+  .steps > :nth-child(3) { grid-column: 10 / span 3; margin-top: calc(var(--space-6) * 2); }
+  .steps > * { grid-row: 1; }
+}
+.step { position: relative; display: grid; gap: var(--space-2); align-content: start; min-height: 260px; }
+.step::before {
+  counter-increment: step;
+  content: "0" counter(step);
+  font-size: 2.5rem;
+  font-weight: 900;
+  font-variation-settings: "wdth" 125;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--line-strong);
+  transition: -webkit-text-stroke-color var(--dur) ease, color var(--dur) ease;
+}
+.step:hover::before { color: var(--accent); -webkit-text-stroke-color: var(--blue); }
+.step p { color: var(--fg-muted); }
+
+/* ---------- Perfil do jogador: bola 3D no centro ----------
+   Inspirado na seção "Match intelligence" da referência Matchday, sem o glow:
+   a bola fica sobre as linhas do campo, com uma sombra ambiente embaixo. */
+.ballsec {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  --fg-muted: rgba(255, 255, 255, .72);
+  /* gramado azul à noite: claro sob a bola, escurecendo até as bordas */
+  background:
+    radial-gradient(ellipse 75% 65% at 50% 68%, #18379a 0%, #0e2165 36%, #071442 66%, #030924 100%);
+  /* ocupa a tela inteira, com o conteúdo no meio */
+  min-height: 125svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: calc(var(--bar-h, 68px) + var(--space-4));
+  /* espaço embaixo da bola: o gramado continua e vai apagando até o escuro */
+  padding-bottom: clamp(12rem, 30svh, 22rem);
+}
+/* pixels de HUD no fundo: atrás de todo o conteúdo */
+/* fim da seção: o gramado apaga num degradê até o azul quase preto */
+.ballsec::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 220px;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(3, 9, 36, 0), #030924 90%);
+}
+.ballsec__pixels { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+.ballsec > .wrap { position: relative; z-index: 1; max-width: min(1560px, 100%); }
+
+.ballsec__head { display: grid; gap: var(--space-3); }
+.ballsec__aside { color: var(--fg-muted); font-size: var(--fs-sm); max-width: 34ch; }
+@media (min-width: 860px) {
+  .ballsec__head { grid-template-columns: 1.3fr 1fr; align-items: end; }
+  .ballsec__aside { justify-self: end; }
+}
+
+.ballsec__stage { position: relative; display: grid; gap: var(--space-5); margin-top: var(--space-5); }
+/* colunas acima do gramado da bola (senão ele escurece os textos e o botão) */
+.ballsec__col { position: relative; z-index: 2; display: grid; gap: var(--space-4); align-content: start; list-style: none; }
+@media (min-width: 560px) and (max-width: 959px) {
+  .ballsec__stage { grid-template-columns: 1fr 1fr; }
+  .ballsec__ball { grid-column: 1 / -1; }
+}
+@media (max-width: 959px) {
+  /* bola em cima; espaço embaixo pro gramado não encostar nos textos */
+  .ballsec__ball { order: -1; margin-bottom: clamp(90px, 26vw, 150px); max-width: 420px; }
+}
+@media (min-width: 960px) {
+  .ballsec__stage { grid-template-columns: minmax(260px, 1fr) minmax(380px, 1.9fr) minmax(260px, 1fr); align-items: center; gap: var(--space-5); }
+  .ballsec__col { gap: var(--space-6); }
+  .ballsec__col--left { margin-bottom: var(--space-6); }  /* colunas desencontradas: sem simetria de grid */
+  .ballsec__col--right { align-self: start; margin-top: var(--space-6); }
+}
+
+.feat { display: grid; grid-template-columns: 40px 1fr; gap: .2rem .9rem; }
+.feat__icon {
+  grid-row: span 2;
+  width: 40px; height: 40px;
+  display: grid; place-items: center;
+  border-radius: var(--radius-sm);
+  background: var(--blue);
+  color: var(--yellow);
+}
+.feat__icon svg { width: 19px; height: 19px; }
+/* número do passo no lugar do ícone */
+.feat__icon--num {
+  background: var(--yellow);
+  color: var(--blue-900);
+  font-size: 1.1rem;
+  font-weight: 800;
+  font-variation-settings: "wdth" 110;
+}
+.feat h3 { font-size: 1rem; font-variation-settings: "wdth" 105; letter-spacing: 0; align-self: end; }
+.feat p { font-size: var(--fs-sm); color: var(--fg-muted); max-width: 30ch; }
+/* botão depois do passo 3: alinhado com o texto dos passos */
+.ballsec__cta { width: fit-content; }
+@media (min-width: 960px) { .ballsec__col--left > li:last-child { margin-top: calc(var(--space-4) - var(--space-6)); } }
+@media (max-width: 559px) { .ballsec__cta { margin-left: 0; width: 100%; } }
+
+.ballsec__ball {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  max-width: min(700px, 64svh);
+  aspect-ratio: 1;
+  justify-self: center;
+}
+/* Gramado em perspectiva atrás da bola (como na referência Matchday):
+   faixas de corte da grama + textura fina + linhas brancas do campo.
+   A bola fica "apoiada" no círculo central; as bordas se dissolvem no fundo claro. */
+.ballsec__pitch {
+  position: absolute;
+  left: 50%;
+  top: 94%;                      /* centro do campo = ponto onde a bola encosta */
+  width: 520%;
+  aspect-ratio: 1000 / 600;
+  translate: -50% -50%;
+  transform: perspective(1200px) rotateX(62deg);
+  z-index: -1;
+  pointer-events: none;
+  background:
+    /* textura fina de grama */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.02 0 0 0 0 0.05 0 0 0 0 0.2 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    /* escurece do centro pra fora (luz concentrada na bola) */
+    radial-gradient(ellipse 50% 50% at 50% 50%, rgba(3, 9, 36, 0) 0 10%, rgba(3, 9, 36, .55) 32%, rgba(3, 9, 36, .9) 50%),
+    /* faixas de corte */
+    repeating-linear-gradient(90deg, #17389b 0 3.125%, #2046b0 3.125% 6.25%);
+  /* some em volta (radial) e também na parte mais perto de quem olha (linear),
+     pra seção terminar escura em vez de cortar o gramado */
+  -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 30%, transparent 62%), linear-gradient(180deg, #000 48%, transparent 66%);
+  -webkit-mask-composite: source-in;
+  mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 30%, transparent 62%), linear-gradient(180deg, #000 48%, transparent 66%);
+  mask-composite: intersect;
+}
+.ballsec__field {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none; /* a regra global svg { max-width: 100% } cortava o campo */
+  fill: none;
+  stroke: rgba(255, 255, 255, .7);
+  stroke-width: 2.5;
+}
+.ballsec__field .dot { fill: rgba(255, 255, 255, .85); }
+/* sombra ambiente: ampla e suave, sem brilho */
+.ballsec__shadow {
+  position: absolute;
+  left: 18%; right: 18%; bottom: 3%;
+  height: 8%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(2, 6, 28, .45), rgba(2, 6, 28, 0));
+}
+.ballsec__canvas { position: absolute; inset: 4%; width: 92%; height: 92%; display: block; }
+
+/* ---------- Linhas ligando os passos à bola (estilo Sci-Fi Callout) ----------
+   Desenhadas pelo ball.js a partir da posição real dos textos e da bola.
+   Parado: tracejado fino correndo devagar + um pulso indo até a bola.
+   Mouse/foco no passo: a linha se desenha em amarelo e o anel na bola pulsa. */
+.ballsec__links {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 1;
+  display: none;
+}
+@media (min-width: 960px) { .ballsec__links { display: block; } }
+
+.link__base {
+  fill: none;
+  stroke: rgba(255, 255, 255, .55);
+  stroke-width: 1;
+  stroke-linejoin: miter;
+}
+.link__active {
+  fill: none;
+  stroke: var(--yellow);
+  stroke-width: 1.5;
+  stroke-linejoin: miter;
+  stroke-dasharray: var(--len);
+  stroke-dashoffset: var(--len);
+  transition: stroke-dashoffset .7s var(--ease-out);
+}
+.link.is-on .link__active { stroke-dashoffset: 0; }
+
+/* peças do callout */
+.link__node,
+.link__joint,
+.link__core { fill: #fff; transition: fill .3s; }
+.link__target { fill: var(--blue-900); stroke: #fff; stroke-width: 1.2; transition: stroke .3s; }
+.link__reticle path {
+  fill: none;
+  stroke: rgba(255, 255, 255, .75);
+  stroke-width: 1.2;
+  transition: stroke .3s;
+}
+.link__reticle,
+.link__pulse,
+.link__target,
+.link__core { transform-box: fill-box; transform-origin: center; }
+.link__reticle { transition: transform .5s var(--ease-out); }
+.link__pulse { fill: none; stroke: var(--yellow); stroke-width: 1.2; opacity: 0; }
+.link__dot { fill: var(--yellow); } /* a opacidade é animada no próprio SVG */
+
+.link.is-on .link__node,
+.link.is-on .link__joint,
+.link.is-on .link__core { fill: var(--yellow); }
+.link.is-on .link__target { stroke: var(--yellow); }
+.link.is-on .link__reticle path { stroke: var(--yellow); }
+.link.is-on .link__reticle { transform: rotate(45deg) scale(1.15); }   /* a mira "trava" */
+.link.is-on .link__pulse { animation: link-pulse 1.4s var(--ease-out) infinite; }
+.link.is-on .link__core { animation: link-blink 1.4s steps(2, jump-none) infinite; }
+@keyframes link-pulse {
+  0%   { opacity: .9; transform: scale(1); }
+  100% { opacity: 0;  transform: scale(2.6); }
+}
+@keyframes link-blink { 50% { opacity: .25; } }
+
+/* cantoneiras de HUD em volta de cada passo (desktop) */
+@media (min-width: 960px) {
+  .ballsec .feat { position: relative; padding: 14px 18px; margin: -14px -18px; }
+  .ballsec .feat::before,
+  .ballsec .feat::after {
+    content: "";
+    position: absolute;
+    width: 12px; height: 12px;
+    border: 0 solid rgba(255, 255, 255, .35);
+    transition: border-color .3s, transform .5s var(--ease-out);
+    pointer-events: none;
+  }
+  .ballsec .feat::before { top: 0; left: 0; border-top-width: 1px; border-left-width: 1px; }
+  .ballsec .feat::after  { right: 0; bottom: 0; border-right-width: 1px; border-bottom-width: 1px; }
+  .ballsec .feat.is-on::before,
+  .ballsec .feat.is-on::after { border-color: var(--yellow); }
+  .ballsec .feat.is-on::before { transform: translate(-4px, -4px); }
+  .ballsec .feat.is-on::after  { transform: translate(4px, 4px); }
+}
+
+/* passo correspondente acende junto */
+.ballsec .feat { transition: transform .4s var(--ease-out); }
+.ballsec .feat h3 { transition: color .25s ease; }
+.ballsec .feat__icon { transition: transform .4s var(--ease-out); }
+.ballsec .feat.is-on h3 { color: var(--yellow); }
+.ballsec .feat.is-on .feat__icon { transform: translateY(-2px) rotate(-4deg); }
+@media (min-width: 960px) {
+  .ballsec__col--left .feat.is-on { transform: translateX(6px); }
+  .ballsec__col--right .feat.is-on { transform: translateX(-6px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .link.is-on .link__pulse, .link.is-on .link__core { animation: none; }
+  .link__dot { display: none; }
+}
+
+/* ---------- Atletas: prévia à esquerda + cards de benefícios à direita ---------- */
+/* Fundo com a foto do Ronaldinho PARADA atrás da seção (mesma técnica da
+   peleacademia.com): ao rolar, a seção desliza por cima da foto. */
+.athletes {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #000;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+}
+.athletes__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    /* película: escura à esquerda (texto), quase livre à direita (o Ronaldinho) */
+    linear-gradient(90deg, rgba(0, 0, 0, .88) 0%, rgba(0, 0, 0, .62) 45%, rgba(0, 0, 0, .12) 100%),
+    url("../img/bg-ronaldinho.png");
+  background-size: cover, cover;
+  background-position: center, 80% bottom;
+  background-attachment: fixed, fixed;
+}
+/* celular/tablet: fixed não funciona bem (iOS), a foto rola junto */
+@media (max-width: 1023px), (hover: none) {
+  .athletes__bg {
+    background-attachment: scroll, scroll;
+    background-image:
+      linear-gradient(180deg, rgba(0, 0, 0, .8), rgba(0, 0, 0, .92)),
+      url("../img/bg-ronaldinho.png");
+  }
+}
+.athletes > .wrap { position: relative; z-index: 1; }
+.athletes .player { border-color: transparent; }
+.athletes__grid { display: grid; gap: var(--space-5); align-items: center; }
+@media (min-width: 1024px) {
+  .athletes__grid { grid-template-columns: 1.2fr 1fr; gap: var(--space-6); }
+}
+.athletes .section-head { margin-bottom: var(--space-4); }
+.athletes .athletes__players { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2); }
+.athletes__players .player__photo { aspect-ratio: 16 / 10; }
+.athletes__players .player__body { padding: .75rem 1rem 1rem; }
+.athletes__players .player__initials { font-size: 2.5rem; padding-top: 1.6rem; }
+.athletes .players__more { justify-content: flex-start; margin-top: var(--space-3); }
+
+/* cards no estilo da referência: ícone à esquerda, título em caixa alta espaçado */
+.fcards { display: grid; gap: var(--space-2); list-style: none; }
+.fcard {
+  position: relative;
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-4) var(--space-4) var(--space-3);
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  /* tom amarelado só no canto inferior direito, como na referência (sem brilho) */
+  background:
+    linear-gradient(135deg, #fff 55%, #fff7d6 100%);
+  box-shadow: 0 24px 60px -32px rgba(11, 22, 64, .18); /* sombra ambiente, ampla e suave */
+  transition: transform .4s var(--ease-out), border-color .3s ease;
+}
+.fcard:hover { transform: translateY(-3px); border-color: rgba(255, 197, 21, .55); }
+.fcard__icon { color: #e0a800; display: grid; place-items: center; }
+.fcard__icon svg { width: 34px; height: 34px; }
+.fcard__title {
+  font-size: clamp(1rem, .9rem + .35vw, 1.2rem);
+  font-weight: 500;
+  font-variation-settings: "wdth" 125;
+  letter-spacing: .06em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: var(--fg);
+  margin-bottom: .35rem;
+}
+.fcard p { font-size: var(--fs-sm); color: var(--fg-muted); max-width: 40ch; }
+
+/* ---------- Vitrine de jogadores ---------- */
+.players__bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3); margin-bottom: var(--space-4); }
+.players__grid { display: grid; gap: var(--space-3); grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); }
+
+.player {
+  display: grid;
+  overflow: hidden;
+  padding: 0;
+  text-decoration: none;
+}
+.player:hover { transform: translateY(-4px); }
+.player__photo {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  background: linear-gradient(160deg, var(--surface-2), var(--bg));
+  overflow: hidden;
+}
+.player__photo img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--ease-out); }
+.player:hover .player__photo img { transform: scale(1.05); }
+.player__initials {
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  font-size: 2.75rem; font-weight: 900;
+  font-variation-settings: "wdth" 125;
+  color: var(--line-strong);
+}
+.player__photo .badge { position: absolute; left: .75rem; top: .75rem; }
+.player__body { display: grid; gap: .25rem; padding: var(--space-2) var(--space-3) var(--space-3); }
+.player__name { font-size: 1.1rem; font-weight: 700; }
+.player__info { font-size: var(--fs-sm); color: var(--fg-muted); }
+.players__empty { grid-column: 1 / -1; padding: var(--space-5); text-align: center; color: var(--fg-muted); border: 1px dashed var(--line-strong); border-radius: var(--radius); }
+.players__more { margin-top: var(--space-4); display: flex; justify-content: center; }
+
+/* ---------- Contratados ---------- */
+/* Um destaque grande + dois menores empilhados */
+.hired { display: grid; gap: var(--space-2); }
+@media (min-width: 720px) {
+  .hired { grid-template-columns: 1.6fr 1fr; grid-template-rows: 1fr 1fr; }
+  .hired > :first-child { grid-row: 1 / span 2; aspect-ratio: auto; min-height: 520px; }
+}
+.hired__item { position: relative; aspect-ratio: 4 / 3; border-radius: var(--radius); overflow: hidden; background: var(--surface-2); }
+.hired__item img { width: 100%; height: 100%; object-fit: cover; }
+.hired__cap {
+  position: absolute; inset: auto 0 0 0;
+  padding: var(--space-4) var(--space-3) var(--space-3);
+  background: linear-gradient(transparent, rgba(6, 15, 51, .88));
+  color: #fff;
+  font-size: var(--fs-sm);
+}
+.hired__cap strong { display: block; font-size: 1.05rem; }
+
+/* ---------- Planos ---------- */
+.plans { display: grid; gap: var(--space-2); grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); align-items: stretch; }
+.plan { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-4) var(--space-3); }
+.plan--featured { border: 2px solid var(--blue); }
+.plan__name { font-size: var(--fs-sm); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--fg-muted); }
+.plan__price { font-size: 1.75rem; font-weight: 800; font-variation-settings: "wdth" var(--wdth-display); line-height: 1; }
+.plan__price small { font-size: var(--fs-sm); font-weight: 500; color: var(--fg-muted); font-variation-settings: normal; }
+.plan__note { font-size: var(--fs-xs); color: var(--fg-muted); min-height: 1.2em; }
+.plan__list { display: grid; gap: .5rem; padding-block: var(--space-2); border-top: 1px solid var(--line); flex: 1; font-size: var(--fs-sm); }
+.plan__list li { display: flex; gap: .5rem; }
+.plan__list li::before { content: ""; flex: none; width: 6px; height: 6px; margin-top: .55em; background: var(--blue); }
+.plan .btn { width: 100%; }
+.plans__foot { margin-top: var(--space-3); text-align: center; font-size: var(--fs-sm); color: var(--fg-muted); }
+
+/* ---------- Clubes ---------- */
+.clubs { display: grid; gap: var(--space-5); grid-template-columns: 1fr; align-items: center; }
+@media (min-width: 920px) { .clubs { grid-template-columns: 1.1fr 1fr; } }
+.clubs__list { display: grid; gap: var(--space-2); margin-block: var(--space-4); }
+.clubs__list li { display: flex; gap: var(--space-2); padding: var(--space-2) 0; border-bottom: 1px solid var(--line); }
+.clubs__list strong { display: block; }
+.clubs__list span { color: var(--fg-muted); font-size: var(--fs-sm); }
+.clubs__visual {
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius);
+  background:
+    radial-gradient(circle at 50% 50%, transparent 22%, rgba(255, 255, 255, .22) 22.3%, transparent 22.6%),
+    linear-gradient(90deg, transparent 49.8%, rgba(255, 255, 255, .22) 50%, transparent 50.2%),
+    linear-gradient(160deg, var(--blue), var(--blue-900));
+  border: 1px solid var(--line);
+}
+
+/* ---------- CTA final ---------- */
+.cta {
+  text-align: center;
+  display: grid;
+  justify-items: center;
+  gap: var(--space-3);
+  padding: clamp(3rem, 8vw, 6rem) var(--gutter);
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+.cta h2 { text-transform: uppercase; max-width: 16ch; }
+.cta p { max-width: 50ch; opacity: .8; }
+.cta .btn--primary { --btn-bg: var(--accent-ink); --btn-fg: var(--accent); --btn-bd: var(--accent-ink); }
+
+/* ---------- Footer ---------- */
+.footer { padding-block: var(--space-6) var(--space-4); margin-top: var(--space-6); background: var(--bg); }
+.footer__grid { display: grid; gap: var(--space-5); grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+.footer__brand p { color: var(--fg-muted); font-size: var(--fs-sm); margin-top: var(--space-2); max-width: 32ch; }
+.footer h4 { font-size: var(--fs-xs); letter-spacing: .14em; text-transform: uppercase; color: var(--fg-muted); margin-bottom: var(--space-2); }
+.footer ul { display: grid; gap: .4rem; }
+.footer a { text-decoration: none; font-size: var(--fs-sm); transition: color var(--dur-fast); }
+.footer a:hover { color: var(--accent); }
+.footer__social { display: flex; gap: .5rem; }
+.footer__social a { width: 42px; height: 42px; display: grid; place-items: center; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); }
+.footer__social svg { width: 18px; height: 18px; }
+.footer__bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-2); margin-top: var(--space-6); padding-top: var(--space-3); border-top: 1px solid var(--line); font-size: var(--fs-xs); color: var(--fg-muted); }
+.footer__bottom button { text-decoration: underline; font-size: inherit; }
+.footer__mega {
+  margin-top: var(--space-5);
+  font-size: clamp(3rem, 15vw, 13rem);
+  font-weight: 900;
+  font-variation-settings: "wdth" 125;
+  line-height: .8;
+  letter-spacing: -.04em;
+  text-transform: uppercase;
+  color: var(--surface-2);
+  user-select: none;
+  white-space: nowrap;
+  overflow: hidden;
+}
