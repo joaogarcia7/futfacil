@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Uniformes Futfácil: propostas</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+  <style>
+    :root {
+      --yellow: #ffc515;
+      --blue: #122b7e;
+      --blue-700: #0e2165;
+      --blue-900: #091547;
+      --bg: #f3f5fa;
+      --fg: #0b1640;
+      --muted: #56618a;
+      --line: rgba(18, 43, 126, .12);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: "Archivo", system-ui, sans-serif; background: var(--bg); color: var(--fg); line-height: 1.5; }
+    .wrap { max-width: 1240px; margin: 0 auto; padding: 56px clamp(16px, 4vw, 40px) 80px; }
+
+    header { display: grid; gap: 12px; margin-bottom: 40px; max-width: 720px; }
+    header img { width: 56px; height: 56px; }
+    h1 { font-size: clamp(1.9rem, 1.2rem + 2.4vw, 3rem); font-weight: 900; font-variation-settings: "wdth" 118; line-height: 1; letter-spacing: -.02em; }
+    header p { color: var(--muted); }
+
+    .grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); }
+    .card {
+      display: grid;
+      gap: 14px;
+      padding: 18px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      box-shadow: 0 30px 70px -45px rgba(11, 22, 64, .25);
+    }
+    .stage {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      padding: 14px 8px 6px;
+      border-radius: 8px;
+      background: linear-gradient(180deg, #eef1f8, #e3e8f3);
+    }
+    .stage figure { display: grid; justify-items: center; gap: 4px; }
+    .stage svg { width: 100%; height: auto; display: block; }
+    .stage figcaption { font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+    .meta { display: grid; gap: 4px; }
+    .meta h2 { font-size: 1.15rem; font-weight: 800; font-variation-settings: "wdth" 110; }
+    .meta h2 span { color: var(--muted); font-weight: 600; font-variation-settings: normal; font-size: .85rem; margin-right: 6px; }
+    .meta p { font-size: .88rem; color: var(--muted); }
+    .foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+    .swatches { display: flex; gap: 6px; }
+    .swatches i { width: 22px; height: 22px; border-radius: 4px; border: 1px solid var(--line); }
+    .actions { display: flex; gap: 6px; }
+    .btn {
+      font: inherit; font-size: .8rem; font-weight: 700;
+      padding: .5rem .8rem;
+      border-radius: 6px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--fg);
+      cursor: pointer;
+    }
+    .btn:hover { border-color: var(--blue); }
+    .btn--primary { background: var(--yellow); border-color: var(--yellow); color: var(--blue-900); }
+    .btn--primary:hover { border-color: var(--blue-900); }
+    .note { margin-top: 36px; font-size: .85rem; color: var(--muted); max-width: 720px; }
+    @media (max-width: 420px) { .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <img src="escudo.png" alt="Escudo Futfácil">
+      <h1>Uniformes Futfácil: 10 propostas</h1>
+      <p>Azul e amarelo da marca, com o escudo no peito. Cada proposta tem frente e costas. Baixe o SVG para enviar ao designer ou à fábrica.</p>
+    </header>
+
+    <main class="grid" id="grid"></main>
+
+    <p class="note">Esboços em vetor para escolher direção. Antes de produzir, a fábrica ajusta o molde (tamanhos, costuras e área de sublimação) e confirma as cores em Pantone.</p>
+  </div>
+
+  <script>
+    const C = {
+      yellow: "#ffc515", yellowDark: "#e0a800",
+      blue: "#122b7e", blueMid: "#1d3fa6", blue700: "#0e2165", blue900: "#091547",
+      white: "#ffffff",
+    };
+
+    // Molde da camisa (viewBox 0 0 300 340)
+    const SHAPE = "M95 20 Q150 46 205 20 L255 40 L295 110 L252 132 L235 100 L235 322 Q150 332 65 322 L65 100 L48 132 L5 110 L45 40 Z";
+    const SLEEVE_L = "M45 40 L95 20 L65 100 L48 132 L5 110 Z";
+    const SLEEVE_R = "M255 40 L205 20 L235 100 L252 132 L295 110 Z";
+    const CUFF_L = "M5 110 L48 132 L53 122 L10 100 Z";
+    const CUFF_R = "M295 110 L252 132 L247 122 L290 100 Z";
+    const COLLAR_FRONT = "M95 20 Q150 46 205 20 L196 16 Q150 36 104 16 Z";
+    const COLLAR_BACK = "M95 20 Q150 30 205 20 L198 15 Q150 24 102 15 Z";
+    const COLLAR_V = "M98 18 L150 66 L202 18 L190 15 L150 52 L110 15 Z";
+
+    let crest = "escudo.png"; // vira data URL ao carregar (SVG baixado fica completo)
+
+    // gerador determinístico (padrões iguais sempre)
+    const rng = (seed) => () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+
+    const DESIGNS = [
+      {
+        name: "Clássica", desc: "Amarela com gola e punhos azuis e frisos laterais. A mais segura e reconhecível.",
+        swatches: [C.yellow, C.blue],
+        base: C.yellow, sleeves: C.yellow, collar: C.blue, cuffs: C.blue,
+        pattern: () => `<rect x="62" y="100" width="9" height="230" fill="${C.blue}"/><rect x="229" y="100" width="9" height="230" fill="${C.blue}"/>`,
+        number: C.blue, name2: C.blue,
+      },
+      {
+        name: "Listras", desc: "Listras verticais azul e amarelo, no estilo dos grandes clubes. Gola e punhos amarelos.",
+        swatches: [C.blue, C.yellow],
+        base: C.blue, sleeves: C.blue, collar: C.yellow, cuffs: C.yellow,
+        pattern: () => { let s = ""; for (let x = 30; x < 300; x += 52) s += `<rect x="${x}" y="0" width="26" height="340" fill="${C.yellow}"/>`; return s; },
+        number: C.white, numberStroke: C.blue900, name2: C.white, nameStroke: C.blue900, panel: C.blue900,
+      },
+      {
+        name: "Faixa diagonal", desc: "Azul com faixa amarela cruzando o peito, do ombro ao quadril.",
+        swatches: [C.blue, C.yellow],
+        base: C.blue, sleeves: C.blue, collar: C.yellow, cuffs: C.yellow,
+        pattern: () => `<polygon points="40,30 100,30 270,340 210,340" fill="${C.yellow}"/>`,
+        patternBack: () => `<polygon points="260,30 200,30 30,340 90,340" fill="${C.yellow}" opacity=".18"/>`,
+        number: C.yellow, name2: C.yellow,
+      },
+      {
+        name: "Degradê noturno", desc: "Azul que escurece até o quase preto, mangas amarelas. Moderna e elegante.",
+        swatches: [C.blueMid, C.blue900, C.yellow],
+        base: "url(#grad-night)", sleeves: C.yellow, collar: C.yellow, cuffs: C.blue900,
+        defs: `<linearGradient id="grad-night" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${C.blueMid}"/><stop offset="1" stop-color="${C.blue900}"/></linearGradient>`,
+        number: C.yellow, name2: C.yellow,
+      },
+      {
+        name: "Pixel HUD", desc: "Azul escuro com pixels amarelos e cantoneiras, a mesma linguagem tecnológica do site.",
+        swatches: [C.blue900, C.yellow, C.blue],
+        base: C.blue900, sleeves: C.blue900, collar: C.yellow, cuffs: C.yellow,
+        pattern: (side) => {
+          const r = rng(side === "back" ? 97 : 41); let s = "";
+          for (let y = 110; y < 330; y += 9) for (let x = 60; x < 240; x += 9) {
+            const d = (x - 60) / 180 + (330 - y) / 220;           // mais denso embaixo e à direita
+            if (r() < Math.max(0, 1.05 - d)) s += `<rect x="${x}" y="${y}" width="5" height="5" fill="${C.yellow}" opacity="${(0.25 + r() * 0.75).toFixed(2)}"/>`;
+          }
+          return s + `<path d="M75 60 h12 M75 60 v12 M225 300 h-12 M225 300 v-12" stroke="${C.yellow}" stroke-width="2" fill="none"/>`;
+        },
+        number: C.yellow, name2: C.white,
+      },
+      {
+        name: "Faixas horizontais", desc: "Faixas em dois tons de azul, como o gramado cortado, com friso amarelo no peito.",
+        swatches: [C.blue, C.blue700, C.yellow],
+        base: C.blue, sleeves: C.blue700, collar: C.yellow, cuffs: C.yellow,
+        pattern: () => { let s = ""; for (let y = 0; y < 340; y += 44) s += `<rect x="0" y="${y}" width="300" height="22" fill="${C.blue700}"/>`; return s + `<rect x="0" y="128" width="300" height="5" fill="${C.yellow}"/>`; },
+        number: C.white, numberStroke: C.blue900, name2: C.yellow,
+      },
+      {
+        name: "Meio a meio", desc: "Metade amarela, metade azul, com as mangas invertidas. Ousada e fácil de ver em campo.",
+        swatches: [C.yellow, C.blue],
+        base: C.yellow, sleevesL: C.blue, sleevesR: C.yellow, collar: C.blue900, cuffs: C.blue900,
+        pattern: (side) => `<rect x="${side === "back" ? 0 : 150}" y="0" width="150" height="340" fill="${C.blue}"/>`,
+        number: C.yellow, name2: C.white, nameStroke: C.blue900, panel: C.blue900,
+      },
+      {
+        name: "Retrô gola V", desc: "Amarela com riscas finas azuis e gola V, inspirada nos uniformes dos anos 70.",
+        swatches: [C.yellow, C.blue],
+        base: C.yellow, sleeves: C.yellow, collar: null, collarV: C.blue, cuffs: C.blue,
+        pattern: () => { let s = ""; for (let x = 12; x < 300; x += 18) s += `<rect x="${x}" y="0" width="2" height="340" fill="${C.blue}" opacity=".55"/>`; return s; },
+        number: C.blue, name2: C.blue,
+      },
+      {
+        name: "Círculo central", desc: "Azul com o círculo central e a linha do meio-campo desenhados no peito.",
+        swatches: [C.blue, C.yellow, C.white],
+        base: C.blue, sleeves: C.blue, collar: C.yellow, cuffs: C.yellow,
+        pattern: (side) => side === "back"
+          ? `<line x1="150" y1="0" x2="150" y2="340" stroke="${C.white}" stroke-width="2" opacity=".18"/>`
+          : `<circle cx="150" cy="170" r="62" fill="none" stroke="${C.yellow}" stroke-width="3" opacity=".9"/><circle cx="150" cy="170" r="4" fill="${C.yellow}"/><line x1="150" y1="0" x2="150" y2="340" stroke="${C.white}" stroke-width="2" opacity=".25"/>`,
+        crestAt: "center",
+        number: C.yellow, name2: C.white,
+      },
+      {
+        name: "Goleiro", desc: "Amarela com recortes geométricos azuis, pensada como uniforme alternativo ou de goleiro.",
+        swatches: [C.yellow, C.yellowDark, C.blue],
+        base: C.yellow, sleeves: C.yellowDark, collar: C.blue, cuffs: C.blue,
+        patternBack: () => `<polygon points="0,250 120,195 300,280 300,300 120,220 0,275" fill="${C.blue}" opacity=".35"/>`,
+        pattern: () => `<polygon points="0,180 120,120 300,210 300,250 120,165 0,225" fill="${C.blue}" opacity=".9"/><polygon points="0,250 120,195 300,280 300,300 120,220 0,275" fill="${C.blue}" opacity=".35"/>`,
+        number: C.blue, name2: C.blue,
+      },
+    ];
+
+    function jersey(d, side, i) {
+      const id = `j${i}${side}`;
+      const sleeveL = d.sleevesL || d.sleeves, sleeveR = d.sleevesR || d.sleeves;
+      const pat = side === "back" && d.patternBack ? d.patternBack() : (d.pattern ? d.pattern(side) : "");
+      const crestFront = d.crestAt === "center"
+        ? `<image href="${crest}" x="128" y="58" width="44" height="45"/>`
+        : `<image href="${crest}" x="176" y="62" width="38" height="39"/>`;
+      const panel = d.panel ? `<rect x="88" y="128" width="124" height="112" rx="6" fill="${d.panel}" opacity=".95"/>` : "";
+      const numStroke = d.numberStroke ? `stroke="${d.numberStroke}" stroke-width="3" paint-order="stroke"` : "";
+      const front = side === "front";
+      return `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 300 340" role="img" aria-label="${d.name}, ${front ? "frente" : "costas"}">
+        <defs>
+          <clipPath id="${id}c"><path d="${SHAPE}"/></clipPath>
+          <linearGradient id="${id}s" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#000" stop-opacity=".22"/><stop offset=".18" stop-color="#fff" stop-opacity=".10"/>
+            <stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".25"/>
+          </linearGradient>
+          ${d.defs || ""}
+        </defs>
+        <ellipse cx="150" cy="334" rx="96" ry="6" fill="#0b1640" opacity=".12"/>
+        <g clip-path="url(#${id}c)">
+          <rect width="300" height="340" fill="${d.base}"/>
+          ${pat}
+          <path d="${SLEEVE_L}" fill="${sleeveL}"/>
+          <path d="${SLEEVE_R}" fill="${sleeveR}"/>
+          ${d.cuffs ? `<path d="${CUFF_L}" fill="${d.cuffs}"/><path d="${CUFF_R}" fill="${d.cuffs}"/>` : ""}
+          <!-- volume do tecido -->
+          <rect width="300" height="340" fill="url(#${id}s)"/>
+          <path d="M65 100 L95 20 M235 100 L205 20" stroke="#000" stroke-opacity=".15" stroke-width="1.5" fill="none"/>
+        </g>
+        ${front
+          ? (d.collarV ? `<path d="${COLLAR_V}" fill="${d.collarV}"/>` : `<path d="${COLLAR_FRONT}" fill="${d.collar}"/>`)
+          : `<path d="${COLLAR_BACK}" fill="${d.collar || d.collarV}"/>`}
+        <path d="${SHAPE}" fill="none" stroke="#0b1640" stroke-opacity=".35" stroke-width="1.5" stroke-linejoin="round"/>
+        ${front ? crestFront : `
+          ${panel}
+          <text x="150" y="98" text-anchor="middle" font-family="Archivo, sans-serif" font-weight="800" font-size="17" letter-spacing="2.5" fill="${d.name2}" ${d.nameStroke ? `stroke="${d.nameStroke}" stroke-width="3" paint-order="stroke"` : ""}>FUTFÁCIL</text>
+          <text x="150" y="222" text-anchor="middle" font-family="Archivo, sans-serif" font-weight="900" font-size="104" fill="${d.number}" ${numStroke} style="font-variation-settings:'wdth' 100">10</text>
+          <image href="${crest}" x="138" y="290" width="24" height="25"/>`}
+      </svg>`;
+    }
+
+    function render() {
+      document.getElementById("grid").innerHTML = DESIGNS.map((d, i) => `
+        <article class="card">
+          <div class="stage">
+            <figure>${jersey(d, "front", i)}<figcaption>Frente</figcaption></figure>
+            <figure>${jersey(d, "back", i)}<figcaption>Costas</figcaption></figure>
+          </div>
+          <div class="meta">
+            <h2><span>${String(i + 1).padStart(2, "0")}</span>${d.name}</h2>
+            <p>${d.desc}</p>
+          </div>
+          <div class="foot">
+            <div class="swatches">${d.swatches.map((c) => `<i style="background:${c}" title="${c}"></i>`).join("")}</div>
+            <div class="actions">
+              <button class="btn" type="button" data-dl="${i}" data-side="front">Frente .svg</button>
+              <button class="btn btn--primary" type="button" data-dl="${i}" data-side="back">Costas .svg</button>
+            </div>
+          </div>
+        </article>`).join("");
+    }
+
+    document.addEventListener("click", (e) => {
+      const b = e.target.closest("[data-dl]");
+      if (!b) return;
+      const i = Number(b.dataset.dl), side = b.dataset.side, d = DESIGNS[i];
+      const blob = new Blob([jersey(d, side, i)], { type: "image/svg+xml" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `uniforme-${String(i + 1).padStart(2, "0")}-${d.name.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/\s+/g, "-")}-${side === "front" ? "frente" : "costas"}.svg`;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    });
+
+    // embute o escudo como data URL: o SVG baixado já leva a imagem junto
+    fetch(crest).then((r) => r.blob()).then((bl) => new Promise((ok) => { const fr = new FileReader(); fr.onload = () => ok(fr.result); fr.readAsDataURL(bl); }))
+      .then((url) => { crest = url; render(); })
+      .catch(render);
+    render();
+  </script>
+</body>
+</html>
