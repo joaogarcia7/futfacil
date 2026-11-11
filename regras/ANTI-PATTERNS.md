@@ -3,7 +3,7 @@
 O site falha se contiver qualquer um destes itens.
 
 - **Nada de glow**: sem sombras coloridas brilhantes, sem orbs de gradiente luminoso no fundo, sem text-shadow neon.
-- **Nada de pills**: botões e badges com `border-radius` máximo de 8px. Proibido `rounded-full` em botões, tags e badges. Eyebrows de seção são texto uppercase pequeno com tracking largo, sem cápsula ao redor e **sem linha ao lado** (o cliente leu a linha como travessão).
+- **Nada de pills**: botões e badges com `border-radius` máximo de 8px. Proibido `rounded-full` em botões, tags e badges (exceção pedida pelo cliente: os pinos redondos de tabuleiro do campo da seção Clubes). Eyebrows de seção são texto uppercase pequeno com tracking largo, sem cápsula ao redor e **sem linha ao lado** (o cliente leu a linha como travessão).
 - **Bordas discretas**: cards com raio entre 4px e 12px, nunca 2rem ou squircle exagerado.
 - **Nunca usar travessão (—)** em nenhum texto do site. Substituir por vírgula, dois-pontos ou ponto final.
 - Sem emojis no corpo do site.

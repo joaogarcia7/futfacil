@@ -38,7 +38,7 @@ a **clubes, agentes e olheiros** do futebol brasileiro.
 3. Faixa marquee de posições
 4. Como funciona (3 passos)
 5. Vitrine de jogadores com filtro
-6. Contratados (prova social)
+6. Contratados: carrossel de 1 card por vez + card "Monte um perfil que contrata" (dados de exemplo em HIRED, main.js)
 7. Planos
 8. Para clubes
 9. FAQ
@@ -49,7 +49,7 @@ a **clubes, agentes e olheiros** do futebol brasileiro.
 - Logo · Home · Jogadores ⌄ (mega menu com posições) · Clubes & Contratantes ⌄ · Planos · Mais ⌄
 - Busca 🔍 (overlay; envia para a busca real do site atual) · Entrar · ☰ (menu lateral)
 - No topo fica transparente, dentro do hero. Ao rolar, vira uma pílula flutuante.
-- Some ao descer e volta ao subir. Também some quando o footer aparece.
+- Fica visível durante todo o site (não some ao rolar nem no rodapé).
 
 ## Integração com o site atual (WordPress + HivePress)
 - Busca: `GET https://futfacil.com.br/?post_type=hp_listing&_category=ID&s=termo`
