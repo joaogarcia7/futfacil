@@ -41,9 +41,11 @@ Atualizar ao fim de cada sessão de trabalho.
 - [x] Contratados: 5 fotos reais (fotossite/atleta1-5.png) vestidas com o uniforme (1, 3, 5 = 01 Clássica; 2, 4 = 03 Faixa diagonal) em `assets/img/atletas/`; a ilustração vetorial ficou como reserva. (antes: ilustrações vetoriais dos 6 atletas (19 a 23 anos, aparências variadas) vestindo os uniformes 01 Clássica e 03 Faixa diagonal com o escudo; idade no card; etiqueta "Exemplo" no alto. Função `athleteSVG` no main.js (dados em `look` e `kit`)
 - [x] Página de propostas de uniforme em `uniformes/` (10 modelos, frente e costas, download SVG)
 
+- [x] Revisão: FAQ sem textos provisórios (conteúdo oficial do site atual), "Ver todos" aponta pra listagem real, bola estática de reserva para a seção 3D, responsividade auditada de 320 a 1280 px
+
 ## Em andamento / próximo
+- [ ] Assinatura dos planos ainda leva ao checkout do WordPress (futfacil.com.br/submit-listing/package/...). Decidir: manter o WordPress como back-end ou construir o fluxo de cadastro e pagamento no site novo
 - [ ] Trocar HIRED pelos contratados reais (foto, nome, posição, clube, datas) e desligar HIRED_IS_EXAMPLE
-- [ ] Configurar destino do botão "Ver todos os jogadores"
 - [ ] Seções em fundo claro, como na Matchday
 - [ ] Carrossel de cards com foto (estilo "The games everyone is talking about")
 
