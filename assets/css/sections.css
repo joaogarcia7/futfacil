@@ -314,6 +314,14 @@
   background: radial-gradient(closest-side, rgba(2, 6, 28, .45), rgba(2, 6, 28, 0));
 }
 .ballsec__canvas { position: absolute; inset: 4%; width: 92%; height: 92%; display: block; }
+/* bola estática de reserva: mesma posição da 3D; some quando o 3D já desenhou */
+.ballsec__fallback {
+  position: absolute; inset: 7.2%; width: 85.6%; height: 85.6%; /* = tamanho da esfera 3D */
+  border-radius: 50%; /* é a bola, não um botão */
+  object-fit: cover;
+  transition: opacity .5s ease;
+}
+.ball-ready .ballsec__fallback { opacity: 0; }
 
 /* ---------- Linhas ligando os passos à bola (estilo Sci-Fi Callout) ----------
    Desenhadas pelo ball.js a partir da posição real dos textos e da bola.

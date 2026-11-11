@@ -318,6 +318,7 @@
       ball.material.dispose();
       ball.material = makePhotoMaterial(tex);
       renderer.render(scene, camera);
+      document.documentElement.classList.add("ball-ready"); // esconde a bola estática
     });
 
     function resize() {

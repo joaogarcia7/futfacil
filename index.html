@@ -352,6 +352,8 @@
             </svg>
             </div>
             <span class="ballsec__shadow" aria-hidden="true"></span>
+            <!-- reserva: aparece sem JavaScript, sem WebGL ou enquanto o 3D carrega -->
+            <img class="ballsec__fallback" src="assets/img/bola-estatica.jpg" alt="Bola de futebol" width="420" height="420" loading="lazy" decoding="async">
             <canvas class="ballsec__canvas" data-ball aria-hidden="true"></canvas>
           </div>
 
