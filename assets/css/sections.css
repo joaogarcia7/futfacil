@@ -37,8 +37,8 @@
 .hero__photo.is-active  { transform: none; }
 .hero__photo.is-leaving { transform: translateX(-100%); }
 .hero__photo.no-anim    { transition: none; }
-.hero__photo--neymar { background-image: url("../img/hero-neymar.png"); background-position: 72% 40%; }
-.hero__photo--cr7    { background-image: url("../img/hero-cr7.png");    background-position: 50% 65%; }
+.hero__photo--neymar { background-image: url("../img/hero-neymar.jpg"); background-position: 72% 40%; }
+.hero__photo--cr7    { background-image: url("../img/hero-cr7.jpg");    background-position: 50% 65%; }
 
 @media (max-width: 719px) {
   .hero__photo { transform: none; opacity: 0; transition: opacity .8s ease; }
@@ -438,7 +438,7 @@
   background-image:
     /* película: escura à esquerda (texto), quase livre à direita (o Ronaldinho) */
     linear-gradient(90deg, rgba(0, 0, 0, .88) 0%, rgba(0, 0, 0, .62) 45%, rgba(0, 0, 0, .12) 100%),
-    url("../img/bg-ronaldinho.png");
+    url("../img/bg-ronaldinho.jpg");
   background-size: cover, cover;
   background-position: center, 80% bottom;
   background-attachment: fixed, fixed;
@@ -449,7 +449,7 @@
     background-attachment: scroll, scroll;
     background-image:
       linear-gradient(180deg, rgba(0, 0, 0, .8), rgba(0, 0, 0, .92)),
-      url("../img/bg-ronaldinho.png");
+      url("../img/bg-ronaldinho.jpg");
   }
 }
 .athletes > .wrap { position: relative; z-index: 1; }
@@ -530,33 +530,243 @@
 .players__empty { grid-column: 1 / -1; padding: var(--space-5); text-align: center; color: var(--fg-muted); border: 1px dashed var(--line-strong); border-radius: var(--radius); }
 .players__more { margin-top: var(--space-4); display: flex; justify-content: center; }
 
-/* ---------- Contratados ---------- */
-/* Um destaque grande + dois menores empilhados */
-.hired { display: grid; gap: var(--space-2); }
-@media (min-width: 720px) {
-  .hired { grid-template-columns: 1.6fr 1fr; grid-template-rows: 1fr 1fr; }
-  .hired > :first-child { grid-row: 1 / span 2; aspect-ratio: auto; min-height: 520px; }
+/* ---------- Contratados: carrossel (esquerda) + card de perfil (direita) ---------- */
+.hired-sec { background: var(--bg); overflow: clip; }
+.hired__grid { display: grid; gap: var(--space-5); align-items: center; }
+@media (min-width: 1024px) {
+  .hired__grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: var(--space-6); }
 }
-.hired__item { position: relative; aspect-ratio: 4 / 3; border-radius: var(--radius); overflow: hidden; background: var(--surface-2); }
-.hired__item img { width: 100%; height: 100%; object-fit: cover; }
-.hired__cap {
-  position: absolute; inset: auto 0 0 0;
-  padding: var(--space-4) var(--space-3) var(--space-3);
-  background: linear-gradient(transparent, rgba(6, 15, 51, .88));
+.hired__left .section-head { margin-bottom: var(--space-4); }
+
+/* carrossel: o card do meio em destaque, vizinhos menores e transparentes.
+   O JS define em cada card: --x (deslocamento), --s (escala) e --o (opacidade). */
+.hcarousel { --card-w: min(300px, 74vw); position: relative; touch-action: pan-y; }
+/* fica dentro da coluna: os vizinhos aparecem pela metade e somem na borda */
+.hcarousel__stage {
+  overflow: hidden;
+  padding-block: 12px 40px; margin-block: -12px -40px; box-sizing: content-box; /* espaço pra sombra */
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14%, #000 86%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 14%, #000 86%, transparent 100%);
+}
+.hcarousel__stage {
+  position: relative;
+  height: var(--stage-h, 460px);
+  list-style: none;
+  user-select: none;
+}
+.hcarousel__stage > .hcard {
+  position: absolute;
+  top: 12px; left: 50%;
+  width: var(--card-w);
+  transform: translateX(calc(-50% + var(--x, 0px))) scale(var(--s, 1));
+  opacity: var(--o, 1);
+  transition: filter .5s ease; /* posição muda a cada quadro (movimento contínuo) */
+  cursor: grab;
+  will-change: transform, opacity;
+}
+.hcarousel__stage > .hcard:not(.is-active) { filter: saturate(.6); }
+.hcarousel__stage:active > .hcard { cursor: grabbing; }
+
+/* card de atleta contratado */
+.hcard {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 30px 70px -40px rgba(11, 22, 64, .22);
+}
+/* cantoneiras de HUD (mesma linguagem da seção da bola) */
+.hcard::before, .hcard::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  width: 14px; height: 14px;
+  border: 0 solid #fff;
+  opacity: .8;
+  transition: border-color .3s;
+  pointer-events: none;
+}
+.hcard::before { top: 12px; left: 12px; border-top-width: 1.5px; border-left-width: 1.5px; }
+.hcard::after  { top: 12px; right: 12px; border-top-width: 1.5px; border-right-width: 1.5px; }
+.hcard.is-active::before,
+.hcard.is-active::after { border-color: var(--yellow); }
+
+.hcard__photo {
+  position: relative;
+  aspect-ratio: 4 / 3.4;
+  background:
+    linear-gradient(180deg, rgba(6, 15, 51, 0) 45%, rgba(6, 15, 51, .85) 100%),
+    linear-gradient(160deg, var(--blue), var(--blue-950));
+  overflow: hidden;
+}
+.hcard__photo img { width: 100%; height: 100%; object-fit: cover; }
+.hcard__initials {
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  font-size: 4rem; font-weight: 900;
+  font-variation-settings: "wdth" 125;
+  color: rgba(255, 255, 255, .14);
+}
+.hcard__photo .badge { position: absolute; left: 16px; bottom: 16px; }
+.hcard__tag {
+  position: absolute; right: 34px; top: 14px; /* no alto: não cobre o escudo do uniforme */
+  padding: .25rem .5rem;
+  font-size: .68rem; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: rgba(255, 255, 255, .85);
+  border: 1px solid rgba(255, 255, 255, .4);
+  border-radius: var(--radius-sm);
+}
+.hcard__body { display: grid; gap: .35rem; align-content: start; padding: var(--space-3); }
+.hcard__name { font-size: 1.15rem; letter-spacing: 0; font-variation-settings: "wdth" 110; }
+.hcard__club { font-size: var(--fs-sm); color: var(--fg-muted); }
+.hcard__club strong { color: var(--fg); font-weight: 700; }
+
+/* mini linha do tempo: quadrado, linha, quadrado (callout) */
+.hcard__timeline {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+  padding-top: 18px;
+  list-style: none;
+}
+.hcard__timeline::before {
+  content: "";
+  position: absolute;
+  top: 4px; left: 4px; right: calc(50% - 4px);
+  height: 1px;
+  background: var(--line-strong);
+}
+.hcard__timeline li { position: relative; display: grid; gap: .1rem; }
+.hcard__timeline li::before {
+  content: "";
+  position: absolute;
+  top: -18px; left: 0;
+  width: 9px; height: 9px;
+  background: var(--surface);
+  border: 1.5px solid var(--blue);
+}
+.hcard__timeline li:last-child::before { background: var(--yellow); border-color: var(--yellow); }
+.hcard__timeline span { font-size: var(--fs-xs); color: var(--fg-muted); }
+.hcard__timeline b { font-size: var(--fs-sm); font-weight: 700; color: var(--fg); }
+
+/* card da direita: "Monte um perfil que contrata" (estrutura do anexo) */
+.pcard {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: grid;
+  gap: var(--space-3);
+  padding: clamp(1.75rem, 3vw, 2.75rem);
+  border-radius: var(--radius);
+  border: 1px solid rgba(255, 197, 21, .28);
+  background: var(--blue-950);
+  box-shadow: 0 40px 90px -50px rgba(6, 15, 51, .55);
+}
+/* foto de jogador apagada no canto, como a silhueta do anexo */
+.pcard__bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(200deg, rgba(6, 15, 51, 0) 10%, rgba(6, 15, 51, .9) 52%, var(--blue-950) 72%),
+    url("../img/hero-neymar.jpg") 72% 30% / cover no-repeat;
+  opacity: .9;
+}
+.pcard__title {
+  font-size: clamp(1.9rem, 1.3rem + 1.8vw, 2.8rem);
+  font-weight: 900;
+  line-height: 1;
+  text-transform: uppercase;
+  max-width: 13ch;
+}
+.pcard__text { color: rgba(255, 255, 255, .82); font-size: var(--fs-base); max-width: 46ch; }
+.pcard__steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-2);
+  padding-block: var(--space-3);
+  border-block: 1px solid rgba(255, 197, 21, .22);
+  list-style: none;
+}
+@media (max-width: 559px) { .pcard__steps { grid-template-columns: 1fr; } }
+.pcard__steps li { display: flex; align-items: center; gap: .7rem; font-size: var(--fs-sm); line-height: 1.3; color: #fff; }
+.pcard__steps b { color: var(--yellow); font-weight: 700; }
+.pcard__num {
+  flex: none;
+  width: 30px; height: 30px;
+  display: grid; place-items: center;
+  border: 1px solid var(--yellow);
+  border-radius: var(--radius-sm);
+  color: var(--yellow);
+  font-weight: 700;
+}
+.pcard__ctas { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); }
+@media (max-width: 559px) { .pcard__ctas { grid-template-columns: 1fr; } }
+.pcard__ctas .btn { width: 100%; }
+.pcard__ctas .btn--ghost { border-color: rgba(255, 197, 21, .6); color: #fff; }
+.pcard__ctas .btn--ghost:hover { border-color: var(--yellow); }
+.pcard__foot {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2);
+  font-size: var(--fs-xs);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .7);
+}
+.pcard__foot a {
   color: #fff;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
   font-size: var(--fs-sm);
+  text-decoration: underline;
+  text-underline-offset: 5px;
 }
-.hired__cap strong { display: block; font-size: 1.05rem; }
+.pcard__foot a:hover { color: var(--yellow); }
 
 /* ---------- Planos ---------- */
+/* Planos em azul: quebra a sequência de seções claras */
+.plans-sec {
+  position: relative;
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 0%, #18379a 0%, rgba(24, 55, 154, 0) 70%),
+    linear-gradient(180deg, var(--blue-900), var(--blue-950));
+}
+.plans-sec .plan { background: rgba(255, 255, 255, .04); border-color: rgba(255, 255, 255, .12); }
+.plans-sec .plan:hover { border-color: rgba(255, 255, 255, .28); }
+.plans-sec .plan--featured { border: 2px solid var(--yellow); background: rgba(255, 197, 21, .06); }
+/* selo em cima da borda: não empurra o conteúdo (planos ficam alinhados) */
+.plan { position: relative; }
+.plan--featured > .badge { position: absolute; top: 0; left: var(--space-3); translate: 0 -50%; }
+.plans-sec .plan__list li::before { background: var(--yellow); }
+.plans-sec .btn--ghost { color: #fff; }
+
+/* cada seção do tamanho da tela, conteúdo centralizado, sem invadir a vizinha */
+.hired-sec,
+.plans-sec {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.hired-sec > .wrap,
+.plans-sec > .wrap { width: 100%; }
+
 .plans { display: grid; gap: var(--space-2); grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); align-items: stretch; }
+/* desktop: os 5 planos numa linha só (a seção cabe na tela) */
+@media (min-width: 1100px) { .plans { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
 .plan { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-4) var(--space-3); }
 .plan--featured { border: 2px solid var(--blue); }
 .plan__name { font-size: var(--fs-sm); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--fg-muted); }
-.plan__price { font-size: 1.75rem; font-weight: 800; font-variation-settings: "wdth" var(--wdth-display); line-height: 1; }
+.plan__price { white-space: nowrap; font-size: clamp(1.3rem, .9rem + .9vw, 1.75rem); font-weight: 800; font-variation-settings: "wdth" var(--wdth-display); line-height: 1; }
 .plan__price small { font-size: var(--fs-sm); font-weight: 500; color: var(--fg-muted); font-variation-settings: normal; }
 .plan__note { font-size: var(--fs-xs); color: var(--fg-muted); min-height: 1.2em; }
-.plan__list { display: grid; gap: .5rem; padding-block: var(--space-2); border-top: 1px solid var(--line); flex: 1; font-size: var(--fs-sm); }
+.plan__list { display: grid; gap: .5rem; align-content: start; padding-block: var(--space-2); border-top: 1px solid var(--line); flex: 1; font-size: var(--fs-sm); }
 .plan__list li { display: flex; gap: .5rem; }
 .plan__list li::before { content: ""; flex: none; width: 6px; height: 6px; margin-top: .55em; background: var(--blue); }
 .plan .btn { width: 100%; }
@@ -564,20 +774,120 @@
 
 /* ---------- Clubes ---------- */
 .clubs { display: grid; gap: var(--space-5); grid-template-columns: 1fr; align-items: center; }
-@media (min-width: 920px) { .clubs { grid-template-columns: 1.1fr 1fr; } }
+@media (min-width: 920px) { .clubs { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: var(--space-6); } }
 .clubs__list { display: grid; gap: var(--space-2); margin-block: var(--space-4); }
 .clubs__list li { display: flex; gap: var(--space-2); padding: var(--space-2) 0; border-bottom: 1px solid var(--line); }
 .clubs__list strong { display: block; }
 .clubs__list span { color: var(--fg-muted); font-size: var(--fs-sm); }
-.clubs__visual {
-  aspect-ratio: 4 / 5;
-  border-radius: var(--radius);
-  background:
-    radial-gradient(circle at 50% 50%, transparent 22%, rgba(255, 255, 255, .22) 22.3%, transparent 22.6%),
-    linear-gradient(90deg, transparent 49.8%, rgba(255, 255, 255, .22) 50%, transparent 50.2%),
-    linear-gradient(160deg, var(--blue), var(--blue-900));
-  border: 1px solid var(--line);
+/* Seção de clubes do tamanho da tela */
+.clubs-sec { min-height: 100svh; display: flex; flex-direction: column; justify-content: center; padding-top: calc(var(--bar-h, 68px) + var(--space-3)); padding-bottom: var(--space-4); }
+.clubs-sec > .wrap { width: 100%; }
+
+/* Campo em pé com pinos de tabuleiro magnético (dois times).
+   Desktop: a altura do campo = altura do bloco de texto ao lado (nunca maior que ele). */
+.clubs__pitch { position: relative; }
+@media (min-width: 920px) {
+  .clubs { align-items: stretch; }
+  .clubs__pitch { min-height: 100%; }
+  .clubs__pitch .pitch {
+    position: absolute;
+    top: 0; bottom: 0; left: 50%;
+    height: 100%;
+    width: auto;
+    translate: -50% 0;
+  }
 }
+.pitch {
+  position: relative;
+  width: min(100%, 380px);
+  aspect-ratio: 680 / 1050;
+  margin-inline: auto;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background:
+    /* faixas de corte da grama (verticais, campo deitado) */
+    repeating-linear-gradient(180deg, rgba(255, 255, 255, .04) 0 5%, rgba(255, 255, 255, 0) 5% 10%),
+    radial-gradient(ellipse 75% 70% at 50% 50%, #1d3fa6 0%, var(--blue) 50%, var(--blue-900) 100%);
+  box-shadow: 0 40px 90px -50px rgba(6, 15, 51, .55);
+}
+.pitch__lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  fill: none;
+  stroke: rgba(255, 255, 255, .55);
+  stroke-width: 2;
+}
+.pitch__lines * { vector-effect: non-scaling-stroke; }
+.pitch__lines .dot { fill: rgba(255, 255, 255, .7); }
+
+/* pino: disco com leve volume e sombra no gramado.
+   Exceção às regras de "sem forma redonda": é peça de tabuleiro, não botão (pedido do cliente). */
+.pitch__pins { position: absolute; inset: 0; }
+.pin {
+  --size: clamp(14px, 6%, 26px);
+  --c: var(--yellow);
+  --c-dark: #c99600;
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--size);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  /* tampa do pino: cor da equipe, mais clara em cima (luz) e mais escura na borda */
+  background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--c) 70%, #fff) 0%, var(--c) 45%, var(--c-dark) 100%);
+  box-shadow:
+    0 2px 0 var(--c-dark),                     /* espessura do disco */
+    0 6px 8px -2px rgba(3, 9, 36, .55);         /* sombra no gramado */
+  text-decoration: none;
+  z-index: 1;
+}
+.pin--away { --c: #f4f6fb; --c-dark: #a9b4d0; }
+/* goleiros: aro de outra cor, como no tabuleiro */
+.pin--gk { outline: 2px solid var(--blue-950); outline-offset: -5px; }
+.pin--away.pin--gk { --c: #9fb4ff; --c-dark: #5f78d0; }
+
+.pin__label {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 10px);
+  translate: -50% 4px;
+  padding: .3rem .55rem;
+  white-space: nowrap;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: #fff;
+  background: var(--blue-950);
+  border: 1px solid rgba(255, 255, 255, .2);
+  border-radius: var(--radius-sm);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s, translate .3s var(--ease-out);
+}
+.pin:hover, .pin:focus-visible { z-index: 5; }
+.pin:hover .pin__label, .pin:focus-visible .pin__label { opacity: 1; translate: -50% 0; }
+
+/* entrada: os pinos "caem" no campo um de cada vez quando a seção aparece.
+   Hover levanta o pino (sombra cresce, como se saísse do tabuleiro). */
+.pin {
+  transition:
+    opacity .35s ease,
+    transform .55s cubic-bezier(.34, 1.56, .64, 1),
+    box-shadow .3s ease;
+  transition-delay: calc(var(--i) * 45ms), calc(var(--i) * 45ms), 0s;
+}
+.js .pitch:not(.is-in) .pin { opacity: 0; transform: translateY(-28px) scale(1.15); }
+.pitch.is-in .pin:hover,
+.pitch.is-in .pin:focus-visible {
+  transform: translateY(-6px) scale(1.12);
+  transition-delay: 0s;
+  box-shadow: 0 2px 0 var(--c-dark), 0 14px 14px -4px rgba(3, 9, 36, .5);
+}
+@media (prefers-reduced-motion: reduce) { .js .pitch:not(.is-in) .pin { opacity: 1; transform: none; } }
+
 
 /* ---------- CTA final ---------- */
 .cta {
@@ -607,16 +917,214 @@
 .footer__social svg { width: 18px; height: 18px; }
 .footer__bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-2); margin-top: var(--space-6); padding-top: var(--space-3); border-top: 1px solid var(--line); font-size: var(--fs-xs); color: var(--fg-muted); }
 .footer__bottom button { text-decoration: underline; font-size: inherit; }
+/* a palavra ocupa a largura do container inteira, sem cortar:
+   "FUTFÁCIL" nessa fonte mede ~6,12x o tamanho da fonte, então 100cqi / 6,3 cabe com folga */
+.footer > .wrap { container-type: inline-size; }
 .footer__mega {
   margin-top: var(--space-5);
-  font-size: clamp(3rem, 15vw, 13rem);
+  font-size: calc(100cqi / 6.3);
+  text-align: center;
   font-weight: 900;
   font-variation-settings: "wdth" 125;
-  line-height: .8;
+  line-height: 1;
+  padding-top: .06em; /* espaço pro acento do Á */
   letter-spacing: -.04em;
   text-transform: uppercase;
   color: var(--surface-2);
   user-select: none;
   white-space: nowrap;
-  overflow: hidden;
+  overflow-x: clip;  /* só corta na horizontal, nunca o acento */
 }
+
+/* ==========================================================================
+   Linguagem de HUD aplicada ao resto do site
+   (mesmos elementos dos callouts da seção da bola: linha fina, cantoneira, quadrado)
+   ========================================================================== */
+
+/* números em leitura de painel (largura fixa por dígito) */
+.stat__num, .plan__price, .hcard__timeline b { font-variant-numeric: tabular-nums; }
+
+/* ---------- Planos: cantoneiras + plano escolhido "selecionado" como alvo ---------- */
+.plans-sec .plan::before,
+.plans-sec .plan::after {
+  content: "";
+  position: absolute;
+  width: 12px; height: 12px;
+  border: 0 solid rgba(255, 255, 255, .45);
+  pointer-events: none;
+  transition: transform .4s var(--ease-out), border-color .3s;
+}
+.plans-sec .plan::before { top: 10px; left: 10px; border-top-width: 1px; border-left-width: 1px; }
+.plans-sec .plan::after  { bottom: 10px; right: 10px; border-bottom-width: 1px; border-right-width: 1px; }
+.plans-sec .plan:hover::before { transform: translate(-3px, -3px); border-color: var(--yellow); }
+.plans-sec .plan:hover::after  { transform: translate(3px, 3px); border-color: var(--yellow); }
+
+/* plano em destaque: mira de 4 cantos por fora do card + quadradinho de "selecionado" */
+.plans-sec .plan--featured {
+  border-color: rgba(255, 197, 21, .55);
+  background:
+    linear-gradient(var(--yellow), var(--yellow)) top -1px left -1px / 16px 2px,
+    linear-gradient(var(--yellow), var(--yellow)) top -1px left -1px / 2px 16px,
+    linear-gradient(var(--yellow), var(--yellow)) top -1px right -1px / 16px 2px,
+    linear-gradient(var(--yellow), var(--yellow)) top -1px right -1px / 2px 16px,
+    linear-gradient(var(--yellow), var(--yellow)) bottom -1px left -1px / 16px 2px,
+    linear-gradient(var(--yellow), var(--yellow)) bottom -1px left -1px / 2px 16px,
+    linear-gradient(var(--yellow), var(--yellow)) bottom -1px right -1px / 16px 2px,
+    linear-gradient(var(--yellow), var(--yellow)) bottom -1px right -1px / 2px 16px,
+    rgba(255, 197, 21, .06);
+  background-repeat: no-repeat;
+  border-width: 1px;
+}
+.plans-sec .plan--featured::before { display: none; }
+.plans-sec .plan--featured::after {
+  /* alvo selecionado (quadrado vazado com quadrado cheio), igual ao fim do callout */
+  width: 12px; height: 12px;
+  top: 14px; right: 14px; bottom: auto;
+  border: 1.5px solid var(--yellow);
+  background: radial-gradient(var(--yellow) 0 0) center / 4px 4px no-repeat;
+}
+.plans-sec .plan--featured:hover::after { transform: none; }
+
+/* ---------- Card "Monte um perfil": cantoneiras de HUD ---------- */
+.pcard::before,
+.pcard::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  width: 18px; height: 18px;
+  border: 0 solid var(--yellow);
+  pointer-events: none;
+}
+.pcard::before { top: 14px; left: 14px; border-top-width: 1.5px; border-left-width: 1.5px; }
+.pcard::after  { bottom: 14px; right: 14px; border-bottom-width: 1.5px; border-right-width: 1.5px; }
+
+/* ==========================================================================
+   Ficha de scout: radar no card do atleta (mouse em cima ou foco)
+   ========================================================================== */
+.player__photo { isolation: isolate; }
+.scout {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  background: rgba(6, 15, 51, .86);
+  opacity: 0;
+  transition: opacity .3s ease;
+  pointer-events: none;
+}
+.scout svg { height: 88%; width: auto; max-width: 92%; overflow: visible; }
+.scout__ring { fill: none; stroke: rgba(255, 255, 255, .16); stroke-width: 1; }
+.scout__axis { stroke: rgba(255, 255, 255, .16); stroke-width: 1; }
+.scout__shape {
+  fill: rgba(255, 197, 21, .22);
+  stroke: var(--yellow);
+  stroke-width: 1.5;
+  stroke-linejoin: miter;
+  transform-origin: center;
+  transform-box: view-box;
+  transform: scale(.2);
+  transition: transform .6s var(--ease-out);
+}
+.scout__pt { fill: var(--yellow); stroke: none; }
+.scout__lbl { fill: rgba(255, 255, 255, .85); font-size: 7.5px; font-weight: 700; letter-spacing: .06em; }
+.scout__val { fill: var(--yellow); font-size: 7.5px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.scout__tag {
+  position: absolute; right: 10px; top: 10px;
+  font-size: .62rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  color: rgba(255, 255, 255, .55);
+}
+.player:hover .scout,
+.player:focus-visible .scout { opacity: 1; }
+.player:hover .scout__shape,
+.player:focus-visible .scout__shape { transform: scale(1); }
+/* aviso pra quem passa o mouse: "ver ficha" no canto do card */
+.player__hint {
+  position: absolute; right: 10px; top: 10px; z-index: 3;
+  padding: .2rem .45rem;
+  font-size: .62rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, .35);
+  border-radius: var(--radius-sm);
+  background: rgba(6, 15, 51, .35);
+  transition: opacity .2s;
+}
+.player:hover .player__hint { opacity: 0; }
+
+/* ==========================================================================
+   Busca no hero (slide do clube)
+   ========================================================================== */
+.hero__slides { overflow-x: clip; overflow-y: visible; } /* a lista de sugestões pode descer */
+.hsearch { position: relative; width: min(100%, 520px); z-index: 5; }
+.hsearch__field {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  padding: 6px 6px 6px 14px;
+  background: rgba(6, 15, 51, .72);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, .22);
+  border-radius: var(--radius-sm);
+  transition: border-color .2s;
+}
+.hsearch__field:focus-within { border-color: var(--yellow); }
+.hsearch__field > svg { width: 18px; height: 18px; flex: none; color: rgba(255, 255, 255, .6); }
+.hsearch__field input {
+  flex: 1; min-width: 0;
+  height: 44px;
+  font: inherit;
+  font-size: var(--fs-base);
+  color: #fff;
+  background: none;
+  border: 0;
+  outline: none;
+}
+.hsearch__field input::placeholder { color: rgba(255, 255, 255, .5); }
+.hsearch__field input::-webkit-search-cancel-button { filter: invert(1) opacity(.5); }
+.hsearch__field .btn { min-height: 44px; }
+
+.hsearch__list {
+  position: absolute;
+  left: 0; right: 0;
+  top: calc(100% + 6px);
+  padding: 6px;
+  list-style: none;
+  background: var(--blue-950);
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 30px 70px -30px rgba(0, 0, 0, .25);
+}
+.hsearch__list li {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  padding: .55rem .6rem;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #fff;
+  font-size: var(--fs-sm);
+}
+.hsearch__list li::before { /* quadradinho de callout */
+  content: "";
+  flex: none;
+  width: 7px; height: 7px;
+  border: 1.5px solid rgba(255, 255, 255, .5);
+}
+.hsearch__list li[aria-selected="true"],
+.hsearch__list li:hover { background: rgba(255, 255, 255, .07); }
+.hsearch__list li[aria-selected="true"]::before { background: var(--yellow); border-color: var(--yellow); }
+.hsearch__list mark { background: none; color: var(--yellow); font-weight: 700; }
+.hsearch__type {
+  margin-left: auto;
+  font-size: .66rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  color: rgba(255, 255, 255, .5);
+}
+
+/* Ilustração do atleta no card de contratado (fica atrás do selo de posição) */
+.hcard__art { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.hcard__photo .badge, .hcard__tag { z-index: 1; }
+
+/* foto real do atleta no card de contratado: rosto e escudo sempre à vista */
+.hcard__photo:has(img) { aspect-ratio: 1 / 1; }
+.hcard__photo img { object-position: 50% 60%; }

@@ -2,7 +2,7 @@
    FUTFÁCIL: bola 3D da seção "O perfil do jogador"
 
    - Three.js carregado só quando a seção chega perto da tela.
-   - Usa as 6 fotos reais da bola (assets/img/bola-vistas.png). Enquanto a
+   - Usa as 6 fotos reais da bola (assets/img/bola-vistas.jpg). Enquanto a
      imagem carrega, ou se ela falhar, aparece a bola desenhada:
    - O desenho dos gomos é calculado no shader: cada ponto da esfera olha qual
      é o "centro de gomo" mais próximo (12 pentágonos + 20 hexágonos, como uma
@@ -57,11 +57,13 @@
     varying vec3 vObj;
     varying vec3 vNormal;
     varying vec3 vView;
+    varying vec3 vPosV;
     void main() {
       vObj = normalize(position);
       vNormal = normalize(normalMatrix * normal);
       vec4 mv = modelViewMatrix * vec4(position, 1.0);
       vView = normalize(-mv.xyz);
+      vPosV = mv.xyz;
       gl_Position = projectionMatrix * mv;
     }
   `;
@@ -104,14 +106,15 @@
 
 
   /* ---------- Bola com as fotos reais (6 vistas) ----------
-     A imagem assets/img/bola-vistas.png tem as vistas lado a lado. Para cada
+     A imagem assets/img/bola-vistas.jpg tem as vistas lado a lado. Para cada
      vista: posição do círculo da bola na imagem (cx, cy, raio, em pixels) e
      de que lado ela foi fotografada (dir) com o "cima" da foto (up).
      Cada ponto da esfera pega a cor da foto que estava mais de frente pra ele;
      nas transições as fotos se misturam. A parte de baixo usa o topo espelhado. */
   const PHOTO = {
-    src: "assets/img/bola-vistas.png",
+    src: "assets/img/bola-vistas.jpg",
     size: [1536, 1024],
+    detail: 1,     // relevo do couro (poros + grão): 0 desliga, 1 completo
     sharpness: 30, // maior = transição mais curta entre uma foto e outra (evita costura duplicada)
     views: [
       { name: "frente",          cx: 291.6,  cy: 233.5, r: 216.5, dir: [0, 0, 1],  up: [0, 1, 0] },
@@ -131,9 +134,53 @@
     uniform vec4 uCirc[7];   // cx, cy, raio x, raio y (em coordenadas de textura)
     uniform float uWeight[7];
     uniform float uSharp;
+    uniform float uDetail;   // 0 = sem relevo, 1 = relevo completo
     varying vec3 vObj;
     varying vec3 vNormal;
     varying vec3 vView;
+    varying vec3 vPosV;
+
+    // ---------- ruídos pro relevo do couro ----------
+    vec3 hash3(vec3 p) {
+      p = vec3(dot(p, vec3(127.1, 311.7, 74.7)), dot(p, vec3(269.5, 183.3, 246.1)), dot(p, vec3(113.5, 271.9, 124.6)));
+      return fract(sin(p) * 43758.5453);
+    }
+    // distância ao "centro de célula" mais próximo (Worley): vira poros e grãos
+    vec2 worley(vec3 p) {
+      vec3 i = floor(p), fr = fract(p);
+      float d = 8.0; float id = 0.0;
+      for (int x = -1; x <= 1; x++)
+      for (int y = -1; y <= 1; y++)
+      for (int z = -1; z <= 1; z++) {
+        vec3 g = vec3(float(x), float(y), float(z));
+        vec3 o = hash3(i + g);
+        vec3 r = g + o - fr;
+        float dd = dot(r, r);
+        if (dd < d) { d = dd; id = o.x; }
+      }
+      return vec2(sqrt(d), id);
+    }
+    // relevo: grão de couro (alto) + poros (buracos), com quanto de poro tem no ponto
+    float leather(vec3 p, out float pore) {
+      vec2 g = worley(p * 46.0);                           // grão "pedrinha" do couro sintético
+      float pebble = 1.0 - smoothstep(0.0, 0.75, g.x);
+      vec2 w = worley(p * 78.0 + 7.3);                     // poros: nem toda célula tem
+      float r = mix(0.2, 0.32, fract(w.y * 13.7));
+      float t = clamp(w.x / r, 0.0, 1.0);
+      pore = (1.0 - t * t * (3.0 - 2.0 * t)) * step(0.55, w.y); // borda bem suave (covinha, não furo)
+      pore *= pore;
+      return pebble * 0.55 - pore * 0.6;
+    }
+    // normal perturbada a partir da altura (bump mapping por derivadas de tela)
+    vec3 bumpNormal(vec3 N, vec3 pos, float h, float scale) {
+      vec3 dpdx = dFdx(pos), dpdy = dFdy(pos);
+      float dhdx = dFdx(h), dhdy = dFdy(h);
+      vec3 r1 = cross(dpdy, N), r2 = cross(N, dpdx);
+      float det = dot(dpdx, r1);
+      vec3 grad = sign(det) * (dhdx * r1 + dhdy * r2);
+      return normalize(abs(det) * N - grad * scale);
+    }
+
     void main() {
       vec3 n = normalize(vObj);
       // 1º passo: qual foto está mais de frente pra este ponto
@@ -162,6 +209,17 @@
 
       vec3 N = normalize(vNormal);
       vec3 V = normalize(vView);
+
+      // ---- relevo: poros + grão do couro ----
+      // some aos poucos quando o detalhe fica menor que ~1 pixel (evita tremeluzir)
+      float fw = length(fwidth(vObj)) * 78.0;
+      float detail = uDetail * (1.0 - smoothstep(0.35, 0.9, fw));
+      float pore = 0.0;
+      float h = leather(n, pore) * detail;
+      pore *= detail;
+      N = bumpNormal(N, vPosV, h, 0.0035);
+      col *= 1.0 - pore * 0.12;                          // sombrinha leve dentro do poro
+
       vec3 L = normalize(vec3(-0.5, 0.8, 0.55));      // refletor do estádio: cima/esquerda
       float ndl = dot(N, L);
       float key = clamp(ndl * 0.6 + 0.4, 0.0, 1.0);     // luz "enrolada": o lado escuro não fica preto
@@ -176,7 +234,18 @@
       // brilho do couro: um reflexo largo e suave + um ponto mais forte
       vec3 H = normalize(L + V);
       float ndh = max(dot(N, H), 0.0);
-      lit += vec3(1.0) * (pow(ndh, 18.0) * 0.12 + pow(ndh, 120.0) * 0.45);
+      float glossy = 1.0 - pore * 0.6;                   // poro reflete menos
+      lit += vec3(1.0) * (pow(ndh, 18.0) * 0.12 + pow(ndh, 120.0) * 0.45) * glossy;
+
+      // verniz: segunda camada de reflexo, nítida, mais forte nas bordas (Fresnel)
+      vec3 Ns = normalize(vNormal);                      // o verniz é liso, ignora os poros
+      float ndhC = max(dot(Ns, H), 0.0);
+      float fresC = 0.04 + 0.96 * pow(1.0 - max(dot(Ns, V), 0.0), 5.0);
+      lit += vec3(1.0) * pow(ndhC, 260.0) * 0.55 * glossy;
+      // reflexo do refletor secundário (direita/cima) correndo pela borda
+      vec3 L2 = normalize(vec3(0.75, 0.45, 0.3));
+      lit += vec3(0.85, 0.9, 1.0) * pow(max(dot(Ns, normalize(L2 + V)), 0.0), 90.0) * 0.18 * glossy;
+      lit += vec3(0.7, 0.8, 1.0) * fresC * 0.22;
 
       // contraluz fina na borda (separa a bola do fundo escuro)
       float fres = pow(1.0 - max(dot(N, V), 0.0), 3.0);
@@ -196,6 +265,7 @@
     return new THREE.ShaderMaterial({
       vertexShader,
       fragmentShader: photoFragment,
+      extensions: { derivatives: true }, // dFdx/fwidth no WebGL1
       uniforms: {
         uTex: { value: texture },
         uDir: { value: views.map((v) => norm(v.dir)) },
@@ -204,6 +274,7 @@
         uCirc: { value: views.map((v) => new THREE.Vector4(v.cx / W, 1 - v.cy / H, v.r / W, v.r / H)) },
         uWeight: { value: views.map((v) => v.weight ?? 1) },
         uSharp: { value: PHOTO.sharpness },
+        uDetail: { value: PHOTO.detail ?? 1 },
       },
     });
   }
@@ -467,7 +538,7 @@
 
   function spawn(y) {
     const r = Math.random();
-    const kind = r < 0.86 ? "px" : r < 0.94 ? "plus" : "corner";
+    const kind = r < 0.78 ? "px" : r < 0.9 ? "plus" : "corner"; // mais marcas de callout
     return {
       kind,
       x: rand(0, W),
@@ -475,8 +546,8 @@
       s: kind === "px" ? (Math.random() < 0.7 ? rand(2, 3.5) : rand(3.5, 5)) : rand(9, 14),
       vy: -rand(4, 14),                          // sobe devagar (px/s)
       vx: rand(-2, 2),
-      a: kind === "px" ? rand(0.12, 0.45) : rand(0.12, 0.3),
-      color: Math.random() < 0.13 ? YELLOW : WHITE,
+      a: kind === "px" ? rand(0.3, 0.75) : rand(0.35, 0.6), // mais evidentes
+      color: Math.random() < 0.2 ? YELLOW : WHITE,
       blink: Math.random() < 0.25 ? rand(1.5, 4) : 0, // período da piscada (s)
       phase: rand(0, Math.PI * 2),
     };
@@ -488,7 +559,7 @@
     W = r.width; H = r.height;
     cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const count = Math.round(Math.min(160, Math.max(60, (W * H) / 9000))); // "alguns", proporcional à área
+    const count = Math.round(Math.min(280, Math.max(110, (W * H) / 5500))); // mais pixels, proporcional à área
     items = Array.from({ length: count }, () => spawn());
     draw(0);
   }
