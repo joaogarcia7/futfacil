@@ -2,7 +2,7 @@
 
 Atualizar ao fim de cada sessão de trabalho.
 
-**Última atualização:** 2026-11-10
+**Última atualização:** 2026-11-12
 
 ## Feito
 - [x] Base estática HTML/CSS/JS, sem build
@@ -46,19 +46,16 @@ Atualizar ao fim de cada sessão de trabalho.
 ## Em andamento / próximo
 - [ ] Assinatura dos planos ainda leva ao checkout do WordPress (futfacil.com.br/submit-listing/package/...). Decidir: manter o WordPress como back-end ou construir o fluxo de cadastro e pagamento no site novo
 - [ ] Trocar HIRED pelos contratados reais (foto, nome, posição, clube, datas) e desligar HIRED_IS_EXAMPLE
-- [ ] Seções em fundo claro, como na Matchday
-- [ ] Carrossel de cards com foto (estilo "The games everyone is talking about")
 
 ## Pendências do cliente
 - [ ] Fotos dos atletas (atleta1-5): confirmar origem e autorização de uso de imagem antes de publicar
 - [ ] Fotos da bola: refazer com giros exatos de 90° (e uma de baixo) pra sumir a linha de transição a 45°
 - [ ] Direito de imagem das fotos do hero (Neymar e CR7, a do CR7 é foto de imprensa com patrocínios): ok para protótipo local, precisa de licença ou troca antes de publicar
 - [ ] Logo em vetor de verdade (o SVG atual é um PNG 482x168 embutido)
-- [ ] Fotos: hero, contratados (nome, clube e ano), clubes
-- [ ] Regra dos 30 dias grátis
+- [ ] Dados reais dos contratados (nome, clube e ano) e dos atletas da vitrine
 - [ ] Benefícios de cada plano
 - [ ] Preço do plano Anual (≈ R$ 18,33/mês, mais caro por mês que o Semestral)
-- [ ] Formas de pagamento, WhatsApp, e-mail, CNPJ
+- [ ] Meios de pagamento aceitos (o site atual não lista; o FAQ só diz que é tudo dentro do site), WhatsApp, e-mail, CNPJ
 
 ## Decisões tomadas
 | Data | Decisão | Motivo |
