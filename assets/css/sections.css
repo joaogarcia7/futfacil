@@ -1141,3 +1141,25 @@
 /* foto real do atleta no card de contratado: rosto e escudo sempre à vista */
 .hcard__photo:has(img) { aspect-ratio: 1 / 1; }
 .hcard__photo img { object-position: 50% 60%; }
+
+/* ==========================================================================
+   Mobile / tablet (até 959 px)
+   ========================================================================== */
+@media (max-width: 959px) {
+  /* passos da bola em ordem 1, 2, 3 e o botão por último:
+     as duas colunas "somem" e os itens viram itens do grid da seção */
+  .ballsec__col { display: contents; }
+  .ballsec__col > li { grid-column: 1 / -1; }
+  .ballsec__col--left > li:last-child { order: 10; }   /* "Quero participar" depois do passo 3 */
+  .ballsec__col--left > li:last-child .btn { width: 100%; }
+  /* sem o espaço extra que existe só pro gramado do desktop */
+  .ballsec { min-height: auto; padding-bottom: 6rem; }
+}
+@media (min-width: 560px) and (max-width: 959px) {
+  .ballsec__col > li.feat { grid-column: auto; }       /* tablet: passos em 2 colunas */
+}
+
+/* toque: a ficha de scout abre no hover, que não existe no celular; esconde o selo */
+@media (hover: none), (max-width: 599px) {
+  .player__hint { display: none; }
+}
