@@ -1183,3 +1183,10 @@
   .player.is-open .scout__shape { transform: scale(1); }
   .player.is-open .player__hint { opacity: 0; }
 }
+
+/* planos: chance em destaque, descrição do texto oficial */
+.plans-sec .plan__note { font-size: var(--fs-base); font-weight: 800; color: #fff; text-transform: none; letter-spacing: 0; }
+.plan__desc { font-size: var(--fs-sm); color: var(--fg-muted); line-height: 1.5; }
+.plans-sec .plan__desc { color: rgba(255, 255, 255, .78); }
+/* período do plano em linha própria, para não estourar a largura do card */
+.plans-sec .plan__price small { display: block; margin-top: .35rem; font-size: var(--fs-sm); font-weight: 500; font-variation-settings: normal; }
