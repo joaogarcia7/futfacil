@@ -189,7 +189,6 @@
       <!-- uma foto por slide; a ordem segue a dos textos (jogador, clube) -->
       <div class="hero__bg" aria-hidden="true">
         <div class="hero__photo hero__photo--neymar is-active" data-hero-photo></div>
-        <div class="hero__photo hero__photo--cr7" data-hero-photo></div>
       </div>
       <div class="wrap hero__inner">
 
@@ -205,39 +204,8 @@
             <a class="btn btn--ghost btn--lg" href="#como-funciona">Ver como funciona</a>
           </div>
         </div>
-
-        <div class="hero__copy" id="hero-clube" role="tabpanel" aria-labelledby="tab-clube" inert>
-          <h1 class="hero__title"><span class="mark">Seu reforço</span> está na vitrine.</h1>
-          <p class="lead">Busque atletas por posição, veja vídeos e histórico. O acesso para clubes e agentes é gratuito e não cobramos comissão.</p>
-          <!-- busca no hero: sugere posições e cidades enquanto digita; envia pra busca real do site atual -->
-          <form class="hsearch" action="https://futfacil.com.br/" method="get" role="search" data-hsearch>
-            <input type="hidden" name="post_type" value="hp_listing">
-            <input type="hidden" name="_category" value="" data-hsearch-cat>
-            <div class="hsearch__field">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-              <input type="search" name="s" autocomplete="off" maxlength="256" placeholder="Posição, cidade ou nome"
-                     aria-label="Buscar jogadores" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="hsearch-list" data-hsearch-input>
-              <button class="btn btn--primary" type="submit">Buscar</button>
-            </div>
-            <ul class="hsearch__list" id="hsearch-list" role="listbox" aria-label="Sugestões" hidden data-hsearch-list></ul>
-          </form>
-          <div class="hero__ctas">
-            <a class="btn btn--ghost btn--lg" href="#clubes">Quero ser clube parceiro</a>
-          </div>
-        </div>
         </div>
 
-        <div class="hero__switch" role="tablist" aria-label="Escolha seu perfil">
-          <span class="hero__switch-label" id="switch-label">Você é:</span>
-          <button type="button" role="tab" id="tab-jogador" aria-selected="true" aria-controls="hero-jogador">Jogador</button>
-          <button type="button" role="tab" id="tab-clube" aria-selected="false" aria-controls="hero-clube">Clube ou agente</button>
-        </div>
-
-        <div class="hero__meta">
-          <div><div class="stat__num">+300</div><div class="stat__label">clubes e agentes</div></div>
-          <div><div class="stat__num">30 dias</div><div class="stat__label">grátis pra começar</div></div>
-          <div><div class="stat__num">R$ 0</div><div class="stat__label">para clubes e agentes</div></div>
-        </div>
       </div>
       <a class="hero__scroll" href="#como-funciona">Role a página</a>
     </section>
