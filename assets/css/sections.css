@@ -443,22 +443,24 @@
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background-image:
-    /* película: escura à esquerda (texto), quase livre à direita (o Ronaldinho) */
-    linear-gradient(90deg, rgba(0, 0, 0, .88) 0%, rgba(0, 0, 0, .62) 45%, rgba(0, 0, 0, .12) 100%),
-    url("../img/bg-atleta1.jpg");
-  background-size: cover, cover;
-  background-position: center, 80% bottom;
-  background-attachment: fixed, fixed;
+  /* película escura à esquerda, para o texto ficar legível sobre o preto */
+  background: linear-gradient(90deg, rgba(0, 0, 0, .88) 0%, rgba(0, 0, 0, .62) 45%, rgba(0, 0, 0, .12) 100%);
 }
-/* celular/tablet: fixed não funciona bem (iOS), a foto rola junto */
-@media (max-width: 1023px), (hover: none) {
-  .athletes__bg {
-    background-attachment: scroll, scroll;
-    background-image:
-      linear-gradient(180deg, rgba(0, 0, 0, .8), rgba(0, 0, 0, .92)),
-      url("../img/bg-atleta1.jpg");
-  }
+/* atleta recortado (sem fundo), no canto inferior direito da seção */
+.athletes__figure {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  height: min(92%, 760px);
+  width: auto;
+  max-width: none;
+  pointer-events: none;
+  user-select: none;
+}
+/* celular: a figura some para não brigar com os cards */
+@media (max-width: 759px) {
+  .athletes__figure { display: none; }
 }
 .athletes > .wrap { position: relative; z-index: 1; }
 .athletes .player { border-color: transparent; }
