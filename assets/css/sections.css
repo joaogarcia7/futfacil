@@ -1179,3 +1179,9 @@
 }
 .scout svg { height: 100%; width: 100%; max-width: none; }
 .scout__tag { display: none; }
+
+/* touch: sem hover, a ficha de scout não abre (o toque deixava o cartão preso aberto) */
+@media (hover: none), (pointer: coarse) {
+  .scout { display: none; }
+  .player:hover .scout, .player:focus-visible .scout { opacity: 0; }
+}
