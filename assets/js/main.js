@@ -333,6 +333,18 @@ const PLAYERS = [
 ];
 
 const grid = document.querySelector("[data-players]");
+
+/* celular: o primeiro toque abre a ficha de scout; o segundo abre o perfil */
+grid?.addEventListener("click", (e) => {
+  const card = e.target.closest(".player");
+  if (!card || !matchMedia("(hover: none), (pointer: coarse)").matches) return;
+  if (!card.querySelector(".scout")) return;
+  if (!card.classList.contains("is-open")) {
+    e.preventDefault();
+    grid.querySelectorAll(".player.is-open").forEach((c) => c.classList.remove("is-open"));
+    card.classList.add("is-open");
+  }
+});
 const filters = document.querySelector("[data-filters]");
 
 const initials = (name) => name.split(" ").map((p) => p[0]).slice(0, 2).join("");

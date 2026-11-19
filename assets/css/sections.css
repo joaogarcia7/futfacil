@@ -1165,23 +1165,21 @@
   .player__hint { display: none; }
 }
 
-/* ficha de scout: vira um cartão pequeno no canto, a foto continua visível no hover */
+/* ficha de scout: ocupa a foto inteira no hover (PC) ou ao tocar (celular) */
 .scout {
-  inset: auto;
-  right: 8px;
-  bottom: 8px;
-  width: 54%;
-  aspect-ratio: 1;
-  padding: 4px;
+  inset: 0;
+  padding: 10px;
   background: rgba(6, 15, 51, .9);
-  border: 1px solid rgba(255, 255, 255, .2);
-  border-radius: var(--radius-sm);
+  border: 0;
+  border-radius: 0;
+  aspect-ratio: auto;
+  width: auto;
 }
-.scout svg { height: 100%; width: 100%; max-width: none; }
+.scout svg { height: 92%; width: auto; max-width: 96%; }
 .scout__tag { display: none; }
-
-/* touch: sem hover, a ficha de scout não abre (o toque deixava o cartão preso aberto) */
+/* celular: abre ao tocar (o JS marca o card com .is-open) */
 @media (hover: none), (pointer: coarse) {
-  .scout { display: none; }
-  .player:hover .scout, .player:focus-visible .scout { opacity: 0; }
+  .player.is-open .scout { opacity: 1; }
+  .player.is-open .scout__shape { transform: scale(1); }
+  .player.is-open .player__hint { opacity: 0; }
 }
