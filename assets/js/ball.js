@@ -560,7 +560,7 @@
     W = r.width; H = r.height;
     cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const count = Math.round(Math.min(280, Math.max(110, (W * H) / 5500))); // mais pixels, proporcional à área
+    const count = Math.round(Math.min(120, Math.max(50, (W * H) / 12000))); // poucos pontos, proporcional à área
     items = Array.from({ length: count }, () => spawn());
     draw(0);
   }
