@@ -322,10 +322,10 @@ startSlides();
 /* ---------- 9. Vitrine de jogadores ----------
    Dados de EXEMPLO. Depois virão da API/banco do site. */
 const PLAYERS = [
-  { name: "Lucas Andrade", position: "Atacante", age: 19, city: "Campinas, SP", photo: "", stats: [88, 70, 84, 72, 74] },
-  { name: "Rafael Souza",  position: "Goleiro",  age: 22, city: "Recife, PE",   photo: "", stats: [62, 68, 40, 80, 76] },
-  { name: "Matheus Lima",  position: "Volante",  age: 20, city: "Goiânia, GO",  photo: "", stats: [70, 82, 60, 84, 78] },
-  { name: "Diego Ferreira",position: "Zagueiro", age: 24, city: "Porto Alegre, RS", photo: "", stats: [66, 64, 48, 88, 70] },
+  { name: "Lucas Andrade", position: "Atacante", age: 19, city: "Campinas, SP", photo: "assets/img/atletas/atleta1.jpg", stats: [88, 70, 84, 72, 74] },
+  { name: "Rafael Souza",  position: "Goleiro",  age: 22, city: "Recife, PE",   photo: "assets/img/atletas/atleta2.jpg", stats: [62, 68, 40, 80, 76] },
+  { name: "Matheus Lima",  position: "Volante",  age: 20, city: "Goiânia, GO",  photo: "assets/img/atletas/atleta3.jpg", stats: [70, 82, 60, 84, 78] },
+  { name: "Diego Ferreira",position: "Zagueiro", age: 24, city: "Porto Alegre, RS", photo: "assets/img/atletas/atleta5.jpg", stats: [66, 64, 48, 88, 70] },
   { name: "João Pedro",    position: "Meia",     age: 18, city: "Belo Horizonte, MG", photo: "", stats: [78, 86, 72, 64, 88] },
   { name: "Caio Martins",  position: "Lateral",  age: 21, city: "Salvador, BA", photo: "", stats: [86, 76, 58, 74, 70] },
   { name: "Vinícius Rocha",position: "Atacante", age: 23, city: "Curitiba, PR", photo: "", stats: [84, 68, 82, 76, 72] },
