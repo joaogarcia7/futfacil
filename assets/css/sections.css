@@ -433,7 +433,11 @@
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  background: #000;
+  /* fundo escuro com luz suave vindo de cima à direita (como a foto de referência) */
+  background:
+    radial-gradient(ellipse 55% 70% at 84% 40%, rgba(70, 70, 70, .42), rgba(0, 0, 0, 0) 70%),
+    repeating-linear-gradient(115deg, rgba(255, 255, 255, .025) 0 2px, rgba(255, 255, 255, 0) 2px 70px),
+    linear-gradient(180deg, #0b0b0b, #000 85%);
   min-height: 100svh;
   display: flex;
   align-items: center;
@@ -446,17 +450,33 @@
   /* película escura à esquerda, para o texto ficar legível sobre o preto */
   background: linear-gradient(90deg, rgba(0, 0, 0, .88) 0%, rgba(0, 0, 0, .62) 45%, rgba(0, 0, 0, .12) 100%);
 }
-/* atleta recortado (sem fundo), no canto inferior direito da seção */
+/* atleta recortado (sem fundo), no canto inferior direito da seção.
+   Tratado como a foto de referência: a figura fica com uma camada preta por cima
+   (escurecida e levemente dessaturada), sem destacar mais que o fundo. */
 .athletes__figure {
   position: absolute;
   right: 0;
   bottom: 0;
   z-index: 0;
   height: min(92%, 760px);
-  width: auto;
-  max-width: none;
   pointer-events: none;
   user-select: none;
+}
+.athletes__figure img {
+  display: block;
+  height: 100%;
+  width: auto;
+  max-width: none;
+  filter: grayscale(.45) brightness(.6) contrast(1.08);
+}
+.athletes__figure::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, .28) 0%, rgba(0, 0, 0, .5) 60%, rgba(0, 0, 0, .82) 100%);
+  /* a camada preta fica só sobre a silhueta do atleta, não no retângulo da imagem */
+  -webkit-mask: url("../img/atleta1-recorte.png") center / 100% 100% no-repeat;
+  mask: url("../img/atleta1-recorte.png") center / 100% 100% no-repeat;
 }
 /* celular: a figura some para não brigar com os cards */
 @media (max-width: 759px) {
