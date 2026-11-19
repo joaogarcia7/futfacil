@@ -252,8 +252,8 @@
   font-weight: 800;
   font-variation-settings: "wdth" 110;
 }
-.feat h3 { font-size: 1rem; font-variation-settings: "wdth" 105; letter-spacing: 0; align-self: end; }
-.feat p { font-size: var(--fs-sm); color: var(--fg-muted); max-width: 30ch; }
+.feat h3 { font-size: clamp(1.15rem, 1rem + .4vw, 1.4rem); font-variation-settings: "wdth" 105; letter-spacing: 0; align-self: end; }
+.feat p { font-size: clamp(.95rem, .9rem + .2vw, 1.05rem); color: var(--fg-muted); max-width: 34ch; }
 /* botão depois do passo 3: alinhado com o texto dos passos */
 .ballsec__cta { width: fit-content; }
 @media (min-width: 960px) { .ballsec__col--left > li:last-child { margin-top: calc(var(--space-4) - var(--space-6)); } }
@@ -263,7 +263,7 @@
   position: relative;
   isolation: isolate;
   width: 100%;
-  max-width: min(700px, 64svh);
+  max-width: min(520px, 50svh);
   aspect-ratio: 1;
   justify-self: center;
 }
